@@ -21,6 +21,14 @@ module.exports = {
           key: 'id'
         }
       },
+      item_id: {
+        type: INTEGER,
+        allowNull: false,
+        references: {
+          model: 'items',
+          key: 'id'
+        }
+      },
       content: {
         type: STRING(400),
         allowNull: false
