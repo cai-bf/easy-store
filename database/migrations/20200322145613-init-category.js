@@ -3,19 +3,17 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     const { INTEGER, DATE, STRING } = Sequelize;
-    await queryInterface.createTable('users', {
+    await queryInterface.createTable('categories', {
       id: { type: INTEGER, primaryKey: true, autoIncrement: true },
       name: {
         type: STRING(30),
         allowNull: false
       },
-      email: {
-        type: STRING(40),
-        allowNull: false
-      },
-      password: {
-        type: STRING(128),
-        allowNull: false
+      parent_id: {
+        type: INTEGER,
+        allowNull: false,
+        defaultValue: 0,
+        comment: '上级分类， 0表示没有上级'
       },
       created_at: DATE,
       updated_at: DATE,
@@ -23,6 +21,6 @@ module.exports = {
   },
 
   down: async (queryInterface) => {
-    await queryInterface.dropTable('users');
+    await queryInterface.dropTable('categories');
   }
 };
