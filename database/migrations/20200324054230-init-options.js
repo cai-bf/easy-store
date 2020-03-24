@@ -3,23 +3,19 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     const { INTEGER, DATE, STRING } = Sequelize;
-    await queryInterface.createTable('cart', {
+    await queryInterface.createTable('options', {
       id: { type: INTEGER, primaryKey: true, autoIncrement: true },
-      user_id: {
+      spec_id: {
         type: INTEGER,
         allowNull: false,
         references: {
-          model: 'users',
+          model: 'specifications',
           key: 'id'
         }
       },
-      goods_id: {
-        type: INTEGER,
-        allowNull: false,
-        references: {
-          model: 'goods',
-          key: 'id'
-        }
+      name: {
+        type: STRING(30),
+        allowNull: false
       },
       created_at: DATE,
       updated_at: DATE,
@@ -27,6 +23,6 @@ module.exports = {
   },
 
   down: async (queryInterface) => {
-    await queryInterface.dropTable('cart');
+    await queryInterface.dropTable('options');
   }
 };

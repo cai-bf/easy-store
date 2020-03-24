@@ -2,17 +2,9 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    const { INTEGER, DATE } = Sequelize;
-    await queryInterface.createTable('items', {
+    const { INTEGER, DATE, STRING, DECIMAL } = Sequelize;
+    await queryInterface.createTable('skus', {
       id: { type: INTEGER, primaryKey: true, autoIncrement: true },
-      order_id: {
-        type: INTEGER,
-        allowNull: false,
-        references: {
-          model: 'order',
-          key: 'id'
-        }
-      },
       goods_id: {
         type: INTEGER,
         allowNull: false,
@@ -21,10 +13,23 @@ module.exports = {
           key: 'id'
         }
       },
-      num: {
+      price: {
+        type: DECIMAL(12, 2),
+        allowNull: false
+      },
+      stock_num: {
         type: INTEGER,
         allowNull: false,
         defaultValue: 1
+      },
+      sale_num: {
+        type: INTEGER,
+        allowNull: false,
+        defaultValue: 1
+      },
+      purchase_price: {
+        type: DECIMAL(12, 2),
+        allowNull: false
       },
       created_at: DATE,
       updated_at: DATE,
@@ -33,6 +38,6 @@ module.exports = {
   },
 
   down: async (queryInterface) => {
-    await queryInterface.dropTable('items');
+    await queryInterface.dropTable('skus');
   }
 };

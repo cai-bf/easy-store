@@ -34,13 +34,15 @@ module.exports = {
         allowNull: false,
         defaultValue: 0
       },
-      stock: {
+      stock_num: {
         type: INTEGER,
         allowNull: false,
-        defaultValue: 0
+        defaultValue: 0,
+        comment: "总库存"
       },
       created_at: DATE,
       updated_at: DATE,
+      deleted_at: DATE
     });
   },
 

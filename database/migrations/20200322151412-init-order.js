@@ -32,7 +32,8 @@ module.exports = {
       },
       status: {
         type: ENUM('1', '2', '3', '4'),
-        allowNull: false
+        allowNull: false,
+        comment: "1: 待发货\n2: 已发货\n3: 已签收\n4: 退款中"
       },
       number: {
         type: STRING(30),

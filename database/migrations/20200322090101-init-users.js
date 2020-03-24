@@ -5,6 +5,11 @@ module.exports = {
     const { INTEGER, DATE, STRING } = Sequelize;
     await queryInterface.createTable('users', {
       id: { type: INTEGER, primaryKey: true, autoIncrement: true },
+      avatar: {
+        type: STRING(200),
+        allowNull: false,
+        defaultValue: "http://img3.imgtn.bdimg.com/it/u=1160348607,1578485562&fm=26&gp=0.jpg"
+      },
       name: {
         type: STRING(30),
         allowNull: false
