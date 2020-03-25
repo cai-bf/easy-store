@@ -2,7 +2,7 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    const { INTEGER, DATE } = Sequelize;
+    const { INTEGER, DATE, STRING } = Sequelize;
     await queryInterface.createTable('records', {
       id: { type: INTEGER, primaryKey: true, autoIncrement: true },
       sku_id: {
@@ -23,6 +23,12 @@ module.exports = {
         type: INTEGER,
         allowNull: false,
         comment: "入库金额"
+      },
+      refund_remark: {
+        type: STRING(250),
+        allowNull: false,
+        defaultValue: "",
+        comment: "退款说明"
       },
       created_at: DATE,
       updated_at: DATE

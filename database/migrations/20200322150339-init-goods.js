@@ -40,6 +40,12 @@ module.exports = {
         defaultValue: 0,
         comment: "总库存"
       },
+      sale_num: {
+        type: INTEGER,
+        allowNull: false,
+        defaultValue: 0,
+        comment: "总销量"
+      },
       created_at: DATE,
       updated_at: DATE,
       deleted_at: DATE
