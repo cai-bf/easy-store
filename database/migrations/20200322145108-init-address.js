@@ -29,6 +29,10 @@ module.exports = {
         type: STRING(60),
         allowNull: false
       },
+      code: {
+        type: STRING(10),
+        allowNull: false
+      },
       name: {
         type: STRING(20),
         allowNull: false
