@@ -24,12 +24,6 @@ module.exports = {
         allowNull: false,
         comment: "入库金额"
       },
-      refund_remark: {
-        type: STRING(250),
-        allowNull: false,
-        defaultValue: "",
-        comment: "退款说明"
-      },
       created_at: DATE,
       updated_at: DATE
     });

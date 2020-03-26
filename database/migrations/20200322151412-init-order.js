@@ -39,6 +39,12 @@ module.exports = {
         type: STRING(30),
         comment: '物流单号'
       },
+      refund_remark: {
+        type: STRING(250),
+        allowNull: false,
+        defaultValue: "",
+        comment: "退款说明"
+      },
       created_at: DATE,
       updated_at: DATE,
       deleted_at: DATE
