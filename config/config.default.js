@@ -14,17 +14,17 @@ module.exports = appInfo => {
      * @type {Egg.EggAppConfig}
      **/
     const config = exports = {};
-  
+
     // use for cookie sign key, should change to your own and keep security
     config.keys = appInfo.name + process.env.KEY;
-  
+
     // add your middleware config here
     config.middleware = [];
-  
+
     config.sequelize = {
         dialect: 'mysql',
         dialectOptions: {
-          charset: 'utf8mb4'
+            charset: 'utf8mb4'
         },
         host: '127.0.0.1',
         port: 3306,
@@ -32,8 +32,38 @@ module.exports = appInfo => {
         username: process.env.DB_USER,
         password: process.env.DB_PASSWD,
     };
-  
+
+    config.security = {
+        csrf: false
+    }
+
+    config.email = {
+        client: {
+            host: 'smtp.163.com',
+            secureConnection: true,
+            port: 465,
+            auth: {
+                user: 'rgtdyb',
+                pass: process.env.EMAIL_PASS
+            }
+        }
+    }
+
+    config.redis = {
+        client: {
+            port: 6379,
+            host: '127.0.0.1',
+            password: null,
+            db: 0,
+        },
+    }
+
+    config.validate = {
+        // convert: false,
+        // validateRoot: false,
+    };
+
     return {
         ...config,
     };
-  };
+};
