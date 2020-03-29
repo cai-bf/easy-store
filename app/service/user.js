@@ -17,7 +17,7 @@ class UserService extends Service {
                 data: {}
             };
         }
-        let token = jwt.sign({ id: user.id }, process.env.SALT);
+        let token = jwt.sign({ id: user.id }, process.env.SALT, { expiresIn: '7d' });
         return {
             res: true, 
             data: { Authorization: token }

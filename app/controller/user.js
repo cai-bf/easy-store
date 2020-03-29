@@ -56,7 +56,7 @@ class UserController extends Controller {
         const roles = {
             name: { type: 'string', max: 30 },
             email: { type: 'email' },
-            avatar: { type: 'string' },
+            avatar: { type: 'string', required: false },
             password: { type: 'string' },
             code: { type: 'string' }
         }
