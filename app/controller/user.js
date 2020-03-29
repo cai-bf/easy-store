@@ -78,7 +78,7 @@ class UserController extends Controller {
 
     // 检查验证码
     const code = await app.redis.get(ctx.request.body.email);
-    if (code != ctx.request.body.code) {
+    if (code !== ctx.request.body.code) {
       ctx.body = util.makeRes('验证码错误', 400, {});
       return;
     }

@@ -1,3 +1,5 @@
+'use strict';
+
 const utils = {
   makeRes: (msg, status, data = null) => {
     return Object.assign({ errmsg: msg, errcode: status }, data);

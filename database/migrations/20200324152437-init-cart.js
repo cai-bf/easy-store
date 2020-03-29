@@ -2,7 +2,7 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    const { INTEGER, DATE, STRING } = Sequelize;
+    const { INTEGER, DATE } = Sequelize;
     await queryInterface.createTable('carts', {
       id: { type: INTEGER, primaryKey: true, autoIncrement: true },
       user_id: {
