@@ -10,16 +10,16 @@ module.exports = {
         allowNull: false,
         references: {
           model: 'users',
-          key: 'id'
-        }
+          key: 'id',
+        },
       },
       order_number: {
         type: STRING(18),
-        allowNull: false
+        allowNull: false,
       },
       price: {
         type: DECIMAL(12, 2),
-        allowNull: false
+        allowNull: false,
       },
       remark: STRING(256),
       address_id: {
@@ -27,31 +27,31 @@ module.exports = {
         allowNull: false,
         references: {
           model: 'address',
-          key: 'id'
-        }
+          key: 'id',
+        },
       },
       status: {
         type: ENUM('1', '2', '3', '4'),
         allowNull: false,
-        comment: "1: 待发货\n2: 已发货\n3: 已签收\n4: 退款中"
+        comment: '1: 待发货\n2: 已发货\n3: 已签收\n4: 退款中',
       },
       number: {
         type: STRING(30),
-        comment: '物流单号'
+        comment: '物流单号',
       },
       refund_remark: {
         type: STRING(250),
         allowNull: false,
-        defaultValue: "",
-        comment: "退款说明"
+        defaultValue: '',
+        comment: '退款说明',
       },
       created_at: DATE,
       updated_at: DATE,
-      deleted_at: DATE
+      deleted_at: DATE,
     });
   },
 
-  down: async (queryInterface) => {
+  down: async queryInterface => {
     await queryInterface.dropTable('order');
-  }
+  },
 };

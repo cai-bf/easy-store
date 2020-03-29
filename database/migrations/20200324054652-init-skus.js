@@ -10,34 +10,34 @@ module.exports = {
         allowNull: false,
         references: {
           model: 'goods',
-          key: 'id'
-        }
+          key: 'id',
+        },
       },
       price: {
         type: DECIMAL(12, 2),
-        allowNull: false
+        allowNull: false,
       },
       stock_num: {
         type: INTEGER,
         allowNull: false,
-        defaultValue: 1
+        defaultValue: 1,
       },
       sale_num: {
         type: INTEGER,
         allowNull: false,
-        defaultValue: 1
+        defaultValue: 1,
       },
       purchase_price: {
         type: DECIMAL(12, 2),
-        allowNull: false
+        allowNull: false,
       },
       created_at: DATE,
       updated_at: DATE,
-      deleted_at: DATE
+      deleted_at: DATE,
     });
   },
 
-  down: async (queryInterface) => {
+  down: async queryInterface => {
     await queryInterface.dropTable('skus');
-  }
+  },
 };

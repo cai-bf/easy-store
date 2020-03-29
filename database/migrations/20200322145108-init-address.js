@@ -10,48 +10,48 @@ module.exports = {
         allowNull: false,
         references: {
           model: 'users',
-          key: 'id'
-        }
+          key: 'id',
+        },
       },
       province: {
         type: STRING(30),
-        allowNull: false
+        allowNull: false,
       },
       city: {
         type: STRING(30),
-        allowNull: false
+        allowNull: false,
       },
       county: {
         type: STRING(30),
-        allowNull: false
+        allowNull: false,
       },
       detail: {
         type: STRING(60),
-        allowNull: false
+        allowNull: false,
       },
       code: {
         type: STRING(10),
-        allowNull: false
+        allowNull: false,
       },
       name: {
         type: STRING(20),
-        allowNull: false
+        allowNull: false,
       },
       phone: {
         type: STRING(18),
-        allowNull: false
+        allowNull: false,
       },
       default: {
         type: BOOLEAN,
         allowNull: false,
-        defaultValue: false
+        defaultValue: false,
       },
       created_at: DATE,
       updated_at: DATE,
     });
   },
 
-  down: async (queryInterface) => {
+  down: async queryInterface => {
     await queryInterface.dropTable('address');
-  }
+  },
 };

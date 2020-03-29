@@ -10,26 +10,26 @@ module.exports = {
         allowNull: false,
         references: {
           model: 'skus',
-          key: 'id'
-        }
+          key: 'id',
+        },
       },
       num: {
         type: INTEGER,
         allowNull: false,
         defaultValue: 1,
-        comment: "入库数量"
+        comment: '入库数量',
       },
       price: {
         type: INTEGER,
         allowNull: false,
-        comment: "入库金额"
+        comment: '入库金额',
       },
       created_at: DATE,
-      updated_at: DATE
+      updated_at: DATE,
     });
   },
 
-  down: async (queryInterface) => {
+  down: async queryInterface => {
     await queryInterface.dropTable('records');
-  }
+  },
 };

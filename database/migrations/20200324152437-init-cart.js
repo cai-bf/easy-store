@@ -10,28 +10,28 @@ module.exports = {
         allowNull: false,
         references: {
           model: 'users',
-          key: 'id'
-        }
+          key: 'id',
+        },
       },
       sku_id: {
         type: INTEGER,
         allowNull: false,
         references: {
           model: 'skus',
-          key: 'id'
-        }
+          key: 'id',
+        },
       },
       num: {
         type: INTEGER,
         allowNull: false,
-        defaultValue: 1
+        defaultValue: 1,
       },
       created_at: DATE,
       updated_at: DATE,
     });
   },
 
-  down: async (queryInterface) => {
+  down: async queryInterface => {
     await queryInterface.dropTable('carts');
-  }
+  },
 };

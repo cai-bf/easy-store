@@ -10,19 +10,19 @@ module.exports = {
         allowNull: false,
         references: {
           model: 'goods',
-          key: 'id'
-        }
+          key: 'id',
+        },
       },
       name: {
         type: STRING(20),
-        allowNull: false
+        allowNull: false,
       },
       created_at: DATE,
       updated_at: DATE,
     });
   },
 
-  down: async (queryInterface) => {
+  down: async queryInterface => {
     await queryInterface.dropTable('specifications');
-  }
+  },
 };

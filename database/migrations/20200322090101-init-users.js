@@ -8,26 +8,26 @@ module.exports = {
       avatar: {
         type: STRING(200),
         allowNull: false,
-        defaultValue: "http://img3.imgtn.bdimg.com/it/u=1160348607,1578485562&fm=26&gp=0.jpg"
+        defaultValue: 'http://img3.imgtn.bdimg.com/it/u=1160348607,1578485562&fm=26&gp=0.jpg',
       },
       name: {
         type: STRING(30),
-        allowNull: false
+        allowNull: false,
       },
       email: {
         type: STRING(40),
-        allowNull: false
+        allowNull: false,
       },
       password: {
         type: STRING(128),
-        allowNull: false
+        allowNull: false,
       },
       created_at: DATE,
       updated_at: DATE,
     });
   },
 
-  down: async (queryInterface) => {
+  down: async queryInterface => {
     await queryInterface.dropTable('users');
-  }
+  },
 };

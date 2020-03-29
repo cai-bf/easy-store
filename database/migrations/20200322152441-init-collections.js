@@ -10,23 +10,23 @@ module.exports = {
         allowNull: false,
         references: {
           model: 'users',
-          key: 'id'
-        }
+          key: 'id',
+        },
       },
       goods_id: {
         type: INTEGER,
         allowNull: false,
         references: {
           model: 'goods',
-          key: 'id'
-        }
+          key: 'id',
+        },
       },
       created_at: DATE,
       updated_at: DATE,
     });
   },
 
-  down: async (queryInterface) => {
+  down: async queryInterface => {
     await queryInterface.dropTable('collections');
-  }
+  },
 };

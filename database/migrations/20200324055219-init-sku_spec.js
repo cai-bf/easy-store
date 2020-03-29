@@ -10,31 +10,31 @@ module.exports = {
         allowNull: false,
         references: {
           model: 'skus',
-          key: 'id'
-        }
+          key: 'id',
+        },
       },
       spec_id: {
         type: INTEGER,
         allowNull: false,
         references: {
           model: 'specifications',
-          key: 'id'
-        }
+          key: 'id',
+        },
       },
       option_id: {
         type: INTEGER,
         allowNull: false,
         references: {
           model: 'options',
-          key: 'id'
-        }
+          key: 'id',
+        },
       },
       created_at: DATE,
       updated_at: DATE,
     });
   },
 
-  down: async (queryInterface) => {
+  down: async queryInterface => {
     await queryInterface.dropTable('sku_spec');
-  }
+  },
 };

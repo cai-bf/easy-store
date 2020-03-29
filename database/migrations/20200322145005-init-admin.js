@@ -7,18 +7,18 @@ module.exports = {
       id: { type: INTEGER, primaryKey: true, autoIncrement: true },
       name: {
         type: STRING(30),
-        allowNull: false
+        allowNull: false,
       },
       password: {
         type: STRING(128),
-        allowNull: false
+        allowNull: false,
       },
       created_at: DATE,
       updated_at: DATE,
     });
   },
 
-  down: async (queryInterface) => {
+  down: async queryInterface => {
     await queryInterface.dropTable('admin');
-  }
+  },
 };

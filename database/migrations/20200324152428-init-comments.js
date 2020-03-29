@@ -10,35 +10,35 @@ module.exports = {
         allowNull: false,
         references: {
           model: 'users',
-          key: 'id'
-        }
+          key: 'id',
+        },
       },
       goods_id: {
         type: INTEGER,
         allowNull: false,
         references: {
           model: 'goods',
-          key: 'id'
-        }
+          key: 'id',
+        },
       },
       item_id: {
         type: INTEGER,
         allowNull: false,
         references: {
           model: 'items',
-          key: 'id'
-        }
+          key: 'id',
+        },
       },
       content: {
         type: STRING(400),
-        allowNull: false
+        allowNull: false,
       },
       created_at: DATE,
       updated_at: DATE,
     });
   },
 
-  down: async (queryInterface) => {
+  down: async queryInterface => {
     await queryInterface.dropTable('comments');
-  }
+  },
 };
