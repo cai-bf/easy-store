@@ -10,4 +10,7 @@ module.exports = app => {
   router.post('/users/verify', controller.user.verify); // 验证码
   router.post('/users', controller.user.register); // 注册
   router.get('/check_login', middleware.userAuth, controller.user.check_login); // 检查登录
+
+  // admin验证
+  router.post('/admin/auth', controller.admin.login); // 登录
 };
