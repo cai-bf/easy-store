@@ -1,5 +1,7 @@
 'use strict';
 
+const moment = require('moment');
+
 module.exports = app => {
   const { INTEGER, DATE } = app.Sequelize;
 
@@ -25,12 +27,24 @@ module.exports = app => {
       allowNull: false,
       comment: '入库金额',
     },
-    created_at: DATE,
-    updated_at: DATE,
+    created_at: {
+      type: DATE,
+      get() {
+        return moment(this.getDataValue('create_at')).format('YYYY-MM-DD HH:mm:ss');
+      }
+    },
+    updated_at: {
+      type: DATE,
+      get() {
+        return moment(this.getDataValue('update_at')).format('YYYY-MM-DD HH:mm:ss');
+      }
+    },
   }, {
-    tableName: 'records',
-    underscored: true,
-  });
+      tableName: 'records',
+      underscored: true,
+      createdAt: 'created_at',
+      updatedAt: 'updated_at'
+    });
 
   Record.associate = () => {
     app.model.Record.belongsTo(app.model.Sku, { as: 'sku', foreignKey: 'sku_id' });

@@ -13,4 +13,10 @@ module.exports = app => {
 
   // admin验证
   router.post('/admin/auth', controller.admin.login); // 登录
+
+  // 分类
+  router.post('/admin/categories', middleware.adminAuth, controller.category.create); // 添加分类
+  router.put('/admin/category/:id', middleware.adminAuth, controller.category.modify); // 修改分类
+  router.delete('/admin/category/:id', middleware.adminAuth, controller.category.destroy); // 删除分类
+  router.get('/categories', controller.category.index); // 获取分类
 };

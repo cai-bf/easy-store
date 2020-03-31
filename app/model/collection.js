@@ -1,5 +1,7 @@
 'use strict';
 
+const moment = require('moment');
+
 module.exports = app => {
   const { DATE, INTEGER } = app.Sequelize;
 
@@ -21,12 +23,24 @@ module.exports = app => {
         key: 'id',
       },
     },
-    created_at: DATE,
-    updated_at: DATE,
+    created_at: {
+      type: DATE,
+      get() {
+        return moment(this.getDataValue('create_at')).format('YYYY-MM-DD HH:mm:ss');
+      }
+    },
+    updated_at: {
+      type: DATE,
+      get() {
+        return moment(this.getDataValue('update_at')).format('YYYY-MM-DD HH:mm:ss');
+      }
+    },
   }, {
-    underscored: true,
-    tableName: 'collections',
-  });
+      underscored: true,
+      tableName: 'collections',
+      createdAt: 'created_at',
+      updatedAt: 'updated_at'
+    });
 
   Collection.associate = () => {
     app.model.Collection.belongsTo(app.model.User, { as: 'user', foreignKey: 'user_id' });

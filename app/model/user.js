@@ -1,5 +1,7 @@
 'use strict';
 
+const moment = require('moment');
+
 module.exports = app => {
   const { STRING, DATE, INTEGER } = app.Sequelize;
 
@@ -13,12 +15,24 @@ module.exports = app => {
     },
     email: STRING(40),
     password: STRING(128),
-    created_at: DATE,
-    updated_at: DATE,
+    created_at: {
+      type: DATE,
+      get() {
+        return moment(this.getDataValue('create_at')).format('YYYY-MM-DD HH:mm:ss');
+      }
+    },
+    updated_at: {
+      type: DATE,
+      get() {
+        return moment(this.getDataValue('update_at')).format('YYYY-MM-DD HH:mm:ss');
+      }
+    },
   }, {
-    underscored: true,
-    tableName: 'users',
-  });
+      underscored: true,
+      tableName: 'users',
+      createdAt: 'created_at',
+      updatedAt: 'updated_at'
+    });
 
   User.associate = () => {
     app.model.User.hasMany(app.model.Address, { as: 'addresses', foreignKey: 'user_id' });

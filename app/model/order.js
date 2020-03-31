@@ -1,5 +1,7 @@
 'use strict';
 
+const moment = require('moment');
+
 module.exports = app => {
   const { STRING, INTEGER, DATE, DECIMAL, ENUM } = app.Sequelize;
 
@@ -45,14 +47,32 @@ module.exports = app => {
       defaultValue: '',
       comment: '退款说明',
     },
-    created_at: DATE,
-    updated_at: DATE,
-    deleted_at: DATE,
+    created_at: {
+      type: DATE,
+      get() {
+        return moment(this.getDataValue('create_at')).format('YYYY-MM-DD HH:mm:ss');
+      }
+    },
+    updated_at: {
+      type: DATE,
+      get() {
+        return moment(this.getDataValue('update_at')).format('YYYY-MM-DD HH:mm:ss');
+      }
+    },
+    deleted_at: {
+      type: DATE,
+      get() {
+        return moment(this.getDataValue('deleted_at')).format('YYYY-MM-DD HH:mm:ss');
+      }
+    }
   }, {
-    underscored: true,
-    paranoid: true,
-    tableName: 'order',
-  });
+      underscored: true,
+      paranoid: true,
+      tableName: 'order',
+      createdAt: 'created_at',
+      updatedAt: 'updated_at',
+      deletedAt: 'deleted_at'
+    });
 
   Order.associate = () => {
     app.model.Order.belongsTo(app.model.User, { as: 'user', foreignKey: 'user_id' });

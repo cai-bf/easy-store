@@ -1,5 +1,7 @@
 'use strict';
 
+const moment = require('moment');
+
 module.exports = app => {
   const { STRING, INTEGER, DATE, BOOLEAN } = app.Sequelize;
 
@@ -46,13 +48,24 @@ module.exports = app => {
       allowNull: false,
       defaultValue: false,
     },
-    created_at: DATE,
-    updated_at: DATE,
+    created_at: {
+      type: DATE,
+      get() {
+        return moment(this.getDataValue('create_at')).format('YYYY-MM-DD HH:mm:ss');
+      }
+    },
+    updated_at: {
+      type: DATE,
+      get() {
+        return moment(this.getDataValue('updated_at')).format('YYYY-MM-DD HH:mm:ss');
+      }
+    }
   }, {
-    underscored: true,
-    tableName: 'address',
-  });
-
+      underscored: true,
+      tableName: 'address',
+      createdAt: 'created_at',
+      updatedAt: 'updated_at'
+    });
   Address.associate = () => {
     app.model.Address.belongsTo(app.model.User);
   };
