@@ -15,6 +15,10 @@ module.exports = {
         defaultValue: 0,
         comment: '上级分类， 0表示没有上级',
       },
+      picture: {
+        type: STRING,
+        comment: '二级分类图片'
+      },
       created_at: DATE,
       updated_at: DATE,
     });
