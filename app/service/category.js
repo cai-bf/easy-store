@@ -58,7 +58,7 @@ class CategoryService extends Service {
       }
       await this.ctx.model.Goods.update({ category_id: to.id }, {
         where: {
-          category_id: to.id
+          category_id: from.id
         }
       });
       await from.destroy();
