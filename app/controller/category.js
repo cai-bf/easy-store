@@ -39,7 +39,7 @@ class CategoryController extends Controller {
     const data = ctx.request.body;
     const category = await ctx.model.Category.findByPk(ctx.params.id);
     // 判断是否合规
-    if (data.parent_id && data.parent_id !== 0 && category.parent_id === 0) {
+    if (data.hasOwnProperty('parent_id') && data.parent_id !== 0 && category.parent_id === 0) {
       ctx.status = 400;
       ctx.body = util.makeRes('一级分类无法修改为二级分类', 400, {});
       return;

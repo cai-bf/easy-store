@@ -57,14 +57,14 @@ describe('test/app/controller/user.test.js', () => {
       })
       .expect(400, { errmsg: '参数错误, 请检查', errcode: 400 });
     // 正确情况
-    const code = await app.redis.get('rgtdyb@163.com');
+    const _code = await app.redis.get('rgtdyb@163.com');
     await app.httpRequest()
       .post('/users')
       .send({
         name: 'test',
         email: 'rgtdyb@163.com',
         password: '123',
-        code,
+        code: _code,
       })
       .expect(200, { errmsg: '注册成功', errcode: 0 });
     // 检测数据库
@@ -77,7 +77,7 @@ describe('test/app/controller/user.test.js', () => {
         name: 'test',
         email: 'rgtdyb@163.com',
         password: '123',
-        code,
+        code: _code,
       })
       .expect(400, { errmsg: '该邮箱已被注册', errcode: 400 });
   });
@@ -111,6 +111,6 @@ describe('test/app/controller/user.test.js', () => {
         errcode: 0,
       });
     // 删除记录避免下次测试错误
-    await app.model.User.destroy({ where: { id: res.data.id } });
+    await app.model.User.destroy({ where: { email: 'rgtdyb@163.com' } });
   });
 });

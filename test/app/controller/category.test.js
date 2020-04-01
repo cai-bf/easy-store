@@ -104,7 +104,7 @@ describe('test/app/controller/category.test.js', () => {
     assert(res.body.data[0].parent_id === 0);
     assert(res.body.data[0].name === 'Test');
     assert(res.body.data[0].picture === 'https://test.com/a.jpg');
-    assert(res.body.data[0].children.length() === 2);
+    assert(res.body.data[0].children.length === 2);
     assert(res.body.data[0].children[0].name === 'test_1');
     assert(res.body.data[0].children[1].name === 'test_2');
   });
