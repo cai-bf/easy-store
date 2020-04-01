@@ -91,6 +91,22 @@ class UserController extends Controller {
     }
     ctx.body = util.makeRes(msg, 400, {});
   }
+
+  // 获取用户信息
+  async get_user_info() {
+    const { ctx } = this;
+
+    const data = {};
+    const data = {
+      id: ctx.current_user.id,
+      avatar: ctx.current_user.avatar,
+      name: ctx.current_user.name,
+      email: ctx.current_user.email
+    };
+
+    ctx.body = util.makeRes('获取成功', 0, { data: data });
+    ctx.status = 200;
+  }
 }
 
 module.exports = UserController;
