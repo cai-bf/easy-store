@@ -24,9 +24,9 @@ class CategoryController extends Controller {
     const { ctx } = this;
 
     const roles = {
-      name: { type: 'string', max: 30 },
-      parent_id: { type: 'int', min: 0 },
-      picture: { type: 'url' }
+      name: { type: 'string', max: 30, required: false },
+      parent_id: { type: 'int', min: 0, required: false },
+      picture: { type: 'url', required: false }
     }
     try {
       ctx.validate(roles);
