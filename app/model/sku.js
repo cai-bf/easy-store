@@ -37,28 +37,28 @@ module.exports = app => {
       type: DATE,
       get() {
         return moment(this.getDataValue('create_at')).format('YYYY-MM-DD HH:mm:ss');
-      }
+      },
     },
     updated_at: {
       type: DATE,
       get() {
         return moment(this.getDataValue('update_at')).format('YYYY-MM-DD HH:mm:ss');
-      }
+      },
     },
     deleted_at: {
       type: DATE,
       get() {
         return moment(this.getDataValue('deleted_at')).format('YYYY-MM-DD HH:mm:ss');
-      }
-    }
+      },
+    },
   }, {
-      underscored: true,
-      paranoid: true,
-      tableName: 'skus',
-      createdAt: 'created_at',
-      updatedAt: 'updated_at',
-      deletedAt: 'deleted_at'
-    });
+    underscored: true,
+    paranoid: true,
+    tableName: 'skus',
+    createdAt: 'created_at',
+    updatedAt: 'updated_at',
+    deletedAt: 'deleted_at',
+  });
 
   Sku.associate = () => {
     app.model.Sku.belongsTo(app.model.Goods, { as: 'goods', foreignKey: 'goods_id' });

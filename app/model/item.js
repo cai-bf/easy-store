@@ -36,28 +36,28 @@ module.exports = app => {
       type: DATE,
       get() {
         return moment(this.getDataValue('create_at')).format('YYYY-MM-DD HH:mm:ss');
-      }
+      },
     },
     updated_at: {
       type: DATE,
       get() {
         return moment(this.getDataValue('update_at')).format('YYYY-MM-DD HH:mm:ss');
-      }
+      },
     },
     deleted_at: {
       type: DATE,
       get() {
         return moment(this.getDataValue('deleted_at')).format('YYYY-MM-DD HH:mm:ss');
-      }
-    }
+      },
+    },
   }, {
-      underscored: true,
-      paranoid: true,
-      tableName: 'items',
-      createdAt: 'created_at',
-      updatedAt: 'updated_at',
-      deletedAt: 'deleted_at'
-    });
+    underscored: true,
+    paranoid: true,
+    tableName: 'items',
+    createdAt: 'created_at',
+    updatedAt: 'updated_at',
+    deletedAt: 'deleted_at',
+  });
 
   Item.associate = () => {
     app.model.Item.belongsTo(app.model.Order, { as: 'order', foreignKey: 'order_id' });

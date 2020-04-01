@@ -32,20 +32,20 @@ module.exports = app => {
       type: DATE,
       get() {
         return moment(this.getDataValue('create_at')).format('YYYY-MM-DD HH:mm:ss');
-      }
+      },
     },
     updated_at: {
       type: DATE,
       get() {
         return moment(this.getDataValue('update_at')).format('YYYY-MM-DD HH:mm:ss');
-      }
+      },
     },
   }, {
-      underscored: true,
-      tableName: 'carts',
-      createdAt: 'created_at',
-      updatedAt: 'updated_at'
-    });
+    underscored: true,
+    tableName: 'carts',
+    createdAt: 'created_at',
+    updatedAt: 'updated_at',
+  });
 
   Cart.associate = () => {
     app.model.Cart.belongsTo(app.model.User, { as: 'user', foreignKey: 'user_id' });

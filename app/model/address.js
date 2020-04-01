@@ -52,20 +52,20 @@ module.exports = app => {
       type: DATE,
       get() {
         return moment(this.getDataValue('create_at')).format('YYYY-MM-DD HH:mm:ss');
-      }
+      },
     },
     updated_at: {
       type: DATE,
       get() {
         return moment(this.getDataValue('updated_at')).format('YYYY-MM-DD HH:mm:ss');
-      }
-    }
+      },
+    },
   }, {
-      underscored: true,
-      tableName: 'address',
-      createdAt: 'created_at',
-      updatedAt: 'updated_at'
-    });
+    underscored: true,
+    tableName: 'address',
+    createdAt: 'created_at',
+    updatedAt: 'updated_at',
+  });
   Address.associate = () => {
     app.model.Address.belongsTo(app.model.User);
   };

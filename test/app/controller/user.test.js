@@ -13,36 +13,6 @@ describe('test/app/controller/user.test.js', () => {
         errcode: 401,
       });
   });
-  // 登录
-  it('should POST /auth', async () => {
-    await app.httpRequest()
-      .post('/auth')
-      .send({ email: '906607626@qq.com', password: '1233' })
-      .set('Accept', 'application/json')
-      .expect(401)
-      .expect({
-        errmsg: '用户不存在或密码错误',
-        errcode: 401,
-      });
-
-    const res = await app.httpRequest()
-      .post('/auth')
-      .send({ email: '906607626@qq.com', password: '123' })
-      .set('Accept', 'application/json')
-      .expect(200);
-    assert(res.body.errcode === 0);
-    assert(res.body.errmsg === '登陆成功');
-
-    // 使用token验证登录状态
-    return app.httpRequest()
-      .get('/check_login')
-      .set('Authorization', res.body.Authorization)
-      .expect(200)
-      .expect({
-        errmsg: '已登录',
-        errcode: 0,
-      });
-  });
   // 注册
   it('should POST /users', async () => {
     // 请求验证码
@@ -110,7 +80,37 @@ describe('test/app/controller/user.test.js', () => {
         code,
       })
       .expect(400, { errmsg: '该邮箱已被注册', errcode: 400 });
-    // 删除该数据防止下次测试错误
-    await app.model.User.destroy({ where: { id: user.id } });
+  });
+  // 登录
+  it('should POST /auth', async () => {
+    await app.httpRequest()
+      .post('/auth')
+      .send({ email: 'rgtdyb@163.com', password: '1233' })
+      .set('Accept', 'application/json')
+      .expect(401)
+      .expect({
+        errmsg: '用户不存在或密码错误',
+        errcode: 401,
+      });
+
+    const res = await app.httpRequest()
+      .post('/auth')
+      .send({ email: 'rgtdyb@163.com', password: '123' })
+      .set('Accept', 'application/json')
+      .expect(200);
+    assert(res.body.errcode === 0);
+    assert(res.body.errmsg === '登陆成功');
+
+    // 使用token验证登录状态
+    await app.httpRequest()
+      .get('/check_login')
+      .set('Authorization', res.body.Authorization)
+      .expect(200)
+      .expect({
+        errmsg: '已登录',
+        errcode: 0,
+      });
+    // 删除记录避免下次测试错误
+    await app.model.User.destroy({ where: { id: res.data.id } });
   });
 });

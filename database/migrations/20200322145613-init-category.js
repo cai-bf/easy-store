@@ -17,7 +17,7 @@ module.exports = {
       },
       picture: {
         type: STRING,
-        comment: '二级分类图片'
+        comment: '二级分类图片',
       },
       created_at: DATE,
       updated_at: DATE,

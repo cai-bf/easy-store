@@ -19,25 +19,25 @@ module.exports = app => {
     },
     picture: {
       type: STRING,
-      comment: '二级分类图片'
+      comment: '二级分类图片',
     },
     created_at: {
       type: DATE,
       get() {
         return moment(this.getDataValue('create_at')).format('YYYY-MM-DD HH:mm:ss');
-      }
+      },
     },
     updated_at: {
       type: DATE,
       get() {
         return moment(this.getDataValue('update_at')).format('YYYY-MM-DD HH:mm:ss');
-      }
+      },
     },
   }, {
     underscored: true,
     tableName: 'categories',
     createdAt: 'created_at',
-    updatedAt: 'updated_at'
+    updatedAt: 'updated_at',
   });
 
   Category.associate = () => {

@@ -13,6 +13,8 @@ module.exports = appInfo => {
      **/
   const config = exports = {};
 
+  config.keys = appInfo.name + process.env.KEY;
+
   config.sequelize = {
     dialect: 'mysql',
     dialectOptions: {

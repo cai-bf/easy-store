@@ -16,39 +16,39 @@ class CategoryService extends Service {
   }
 
   async modify(id, data) {
-    let category = await this.ctx.model.Category.findByPk(id);
+    const category = await this.ctx.model.Category.findByPk(id);
     category.update(data);
   }
 
   async destroy(id, change_id) {
     const from = await this.ctx.model.Category.findByPk(id);
     if (change_id === undefined) { // 直接删除
-      if (from.parent_id == 0) {
+      if (from.parent_id === 0) {
         const categoryies = await from.getChildren();
-        let ids = [];
+        const ids = [];
         for (const c of categoryies) {
           ids.push(c.id);
         }
         const Op = this.app.Sequelize.Op;
-        await this.ctx.model.Goods.destroy({ 
+        await this.ctx.model.Goods.destroy({
           where: {
             category_id: {
-              [Op.in]: ids
-            }
-          }
+              [Op.in]: ids,
+            },
+          },
         });
         await this.ctx.model.Category.destroy({
           where: {
             id: {
-              [Op.in]: ids
-            }
-          }
+              [Op.in]: ids,
+            },
+          },
         });
       }
-      await this.ctx.model.Goods.destroy({ 
+      await this.ctx.model.Goods.destroy({
         where: {
-          category_id: from.id
-        }
+          category_id: from.id,
+        },
       });
       await from.destroy();
     } else {
@@ -58,8 +58,8 @@ class CategoryService extends Service {
       }
       await this.ctx.model.Goods.update({ category_id: to.id }, {
         where: {
-          category_id: from.id
-        }
+          category_id: from.id,
+        },
       });
       await from.destroy();
     }

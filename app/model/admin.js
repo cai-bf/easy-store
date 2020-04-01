@@ -19,20 +19,20 @@ module.exports = app => {
       type: DATE,
       get() {
         return moment(this.getDataValue('create_at')).format('YYYY-MM-DD HH:mm:ss');
-      }
+      },
     },
     updated_at: {
       type: DATE,
       get() {
         return moment(this.getDataValue('update_at')).format('YYYY-MM-DD HH:mm:ss');
-      }
+      },
     },
   }, {
-      tableName: 'admin',
-      underscored: true,
-      createdAt: 'created_at',
-      updatedAt: 'updated_at'
-    });
+    tableName: 'admin',
+    underscored: true,
+    createdAt: 'created_at',
+    updatedAt: 'updated_at',
+  });
 
   return Admin;
 };

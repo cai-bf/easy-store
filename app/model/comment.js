@@ -1,6 +1,6 @@
 'use strict';
 
-const comment = require('moment');
+const moment = require('moment');
 
 module.exports = app => {
   const { STRING, DATE, INTEGER } = app.Sequelize;
@@ -39,20 +39,20 @@ module.exports = app => {
       type: DATE,
       get() {
         return moment(this.getDataValue('create_at')).format('YYYY-MM-DD HH:mm:ss');
-      }
+      },
     },
     updated_at: {
       type: DATE,
       get() {
         return moment(this.getDataValue('update_at')).format('YYYY-MM-DD HH:mm:ss');
-      }
+      },
     },
   }, {
-      underscored: true,
-      tableName: 'comments',
-      createdAt: 'created_at',
-      updatedAt: 'updated_at'
-    });
+    underscored: true,
+    tableName: 'comments',
+    createdAt: 'created_at',
+    updatedAt: 'updated_at',
+  });
 
   Comment.associate = () => {
     app.model.Comment.belongsTo(app.model.User, { as: 'user', foreignKey: 'user_id' });
