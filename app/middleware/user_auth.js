@@ -14,7 +14,7 @@ async function user_auth(ctx, next) {
     ctx.body = util.makeRes('请先登录', 401, {});
     return;
   }
-  ctx.current_user = ctx.model.User.findByPk(data.id);
+  ctx.current_user = await ctx.model.User.findByPk(data.id);
 
   await next();
 }

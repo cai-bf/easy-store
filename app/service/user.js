@@ -46,6 +46,22 @@ class UserService extends Service {
       msg: '',
     };
   }
+
+  async modify_password(id, new_password) {
+    const data = {};
+    // 密码加密
+    const salt = bcrypt.genSaltSync();
+    data.password = bcrypt.hashSync(new_password, salt);
+
+    const user = await this.ctx.model.User.findByPk(id);
+    user.update(data);
+  }
+
+  async modify(id, data) {
+    const user = await this.ctx.model.User.findByPk(id);
+    user.update(data);
+  }
+
 }
 
 module.exports = UserService;

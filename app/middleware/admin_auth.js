@@ -19,7 +19,7 @@ async function admin_auth(ctx, next) {
     ctx.body = util.makeRes('请先登录', 401, {});
     return;
   }
-  ctx.current_admin = ctx.model.Admin.findByPk(data.id);
+  ctx.current_admin = await ctx.model.Admin.findByPk(data.id);
 
   await next();
 }
