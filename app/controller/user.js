@@ -96,17 +96,73 @@ class UserController extends Controller {
   async get_user_info() {
     const { ctx } = this;
 
-    const data = {};
     const data = {
       id: ctx.current_user.id,
       avatar: ctx.current_user.avatar,
       name: ctx.current_user.name,
-      email: ctx.current_user.email
+      email: ctx.current_user.email,
     };
 
-    ctx.body = util.makeRes('获取成功', 0, { data: data });
+    ctx.body = util.makeRes('获取成功', 0, { data });
     ctx.status = 200;
   }
+
+  // 修改密码
+  async modify_password() {
+    const { ctx, app } = this;
+    const roles = {
+      code: { type: 'string' },
+      password: { type: 'string' },
+    };
+
+    ctx.status = 400;
+
+    try {
+      ctx.validate(roles);
+    } catch (e) {
+      ctx.body = util.makeRes('参数错误, 请检查', 400, {});
+      return;
+    }
+
+    // 检查验证码
+    const code = await app.redis.get(ctx.current_user.email);
+    if (code !== ctx.request.body.code) {
+      ctx.body = util.makeRes('验证码错误', 400, {});
+      return;
+    }
+    // 开始修改
+    const user_id = ctx.current_user.id;
+    const new_password = ctx.request.body.password;
+    await ctx.service.user.modify_password(user_id, new_password);
+    ctx.status = 200;
+    ctx.body = util.makeRes('密码修改成功', 0, {});
+  }
+
+  // 修改信息(头像，名字)
+  async modify() {
+    const { ctx } = this;
+
+    const roles = {
+      name: { type: 'string', max: 30, required: false },
+      avatar: { type: 'string', max: 200, required: false },
+    };
+
+    try {
+      ctx.validate(roles);
+    } catch (e) {
+      ctx.status = 400;
+      ctx.body = util.makeRes('参数错误, 请检查', 400, {});
+      return;
+    }
+
+    const data = ctx.request.body;
+    const user_id = ctx.current_user.id;
+    await ctx.service.user.modify(user_id, data);
+
+    ctx.status = 200;
+    ctx.body = util.makeRes('修改成功', 0, {});
+  }
+
 }
 
 module.exports = UserController;
