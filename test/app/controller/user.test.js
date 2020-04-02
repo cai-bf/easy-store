@@ -219,7 +219,8 @@ describe('test/app/controller/user.test.js', () => {
       .expect(200)
       .expect({ errmsg: '修改成功', errcode: 0 });
 
-    // 获取用户信息来检验信息是否修改成功
+    // 获取用户信息来检验信息是否修改成功      
+    // 这里如果把注释去掉，也会报错，报错说Error: expected 200 "OK", got 401 "Unauthorized" ， 感觉还是那个识别问题。打开数据库看确实是头像，名字修改完成了的
     // const res2 = await app.httpRequest()
     //   .get('/users')
     //   .set('Authorization', res1.body.Authorization)
@@ -227,7 +228,7 @@ describe('test/app/controller/user.test.js', () => {
     // assert(res2.body.data.name === 'test1');
     // assert(res2.body.data.avatar === 'test.jpg');
 
-    // 删除记录避免下次测试错误
+    // 删除记录避免下次测试错误  //在一开始的检测登陆那放了这个语句 这样可以看到最后的结果
     // await app.model.User.destroy({ where: { email: 'rgtdyb@163.com' } });
   });
 });
