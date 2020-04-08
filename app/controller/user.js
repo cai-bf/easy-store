@@ -24,7 +24,7 @@ class UserController extends Controller {
     }
   }
 
-  // 发送验证码
+  // 发送注册验证码
   async verify() {
     const { ctx, app } = this;
     const roles = {
@@ -105,6 +105,28 @@ class UserController extends Controller {
 
     ctx.body = util.makeRes('获取成功', 0, { data });
     ctx.status = 200;
+  }
+
+  // 发送修改密码验证码
+  async passord_verify() {
+    const { ctx, app } = this;
+
+    const email = ctx.current_user.email;
+
+    const code = util.randomNum();
+    await app.redis.set(email, code, 'EX', 60 * 5);
+
+    const mailOptions = {
+      from: 'rgtdyb@163.com',
+      to: email,
+      subject: '【天东易宝】修改密码验证',
+      html: '您的验证码为 ' + code + ' 有效期为5分钟',
+    };
+    // 发送邮件
+    await app.email.sendMail(mailOptions);
+
+    ctx.status = 200;
+    ctx.body = util.makeRes('发送验证码成功', 0, {});
   }
 
   // 修改密码
