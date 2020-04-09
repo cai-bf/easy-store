@@ -21,6 +21,11 @@ module.exports = app => {
   router.delete('/address/:id', middleware.userAuth, controller.address.destroy); // 用户删除某一项地址收货人
   router.get('/addresses', middleware.userAuth, controller.address.index); // 用户获取地址收货人列表
 
+  //用户的收藏管理
+  router.post('/collections', middleware.userAuth, controller.collection.create); // 用户添加收藏
+  router.delete('/collections/:id', middleware.userAuth, controller.collection.destroy); // 用户删除收藏
+  router.get('/collections', middleware.userAuth, controller.collection.index); // 用户获取收藏商品列表
+
   // admin验证
   router.post('/admin/auth', controller.admin.login); // 登录
 
