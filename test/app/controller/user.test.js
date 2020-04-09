@@ -5,6 +5,13 @@ const { app, assert } = require('egg-mock/bootstrap');
 describe('test/app/controller/user.test.js', () => {
   // 检查登录状态
   it('should GET /check_login', async () => {
+    // // 登陆 用于测试密码是否成功修改为1234
+    // const res1 = await app.httpRequest()
+    //   .post('/auth')
+    //   .send({ email: 'rgtdyb@163.com', password: '1234' })
+    //   .set('Accept', 'application/json')
+    //   .expect(200);
+
     await app.httpRequest()
       .get('/check_login')
       .expect(401)
@@ -152,10 +159,10 @@ describe('test/app/controller/user.test.js', () => {
     assert(res1.body.errcode === 0);
     assert(res1.body.errmsg === '登陆成功');
 
-    // 请求验证码
+    // 请求修改密码验证码
     await app.httpRequest()
-      .post('/users/verify')
-      .send({ email: 'rgtdyb@163.com' })
+      .post('/users/password_verify')
+      .set('Authorization', res1.body.Authorization)
       .expect(200)
       .expect({
         errmsg: '发送验证码成功',
@@ -183,7 +190,7 @@ describe('test/app/controller/user.test.js', () => {
       .send({ password: '1234', code: _code })
       .expect(200, { errmsg: '密码修改成功', errcode: 0 });
 
-    // 再登陆确认密码修改成功
+    // 再登陆确认密码修改成功  无法理解密码是否变化
     const res2 = await app.httpRequest()
       .post('/auth')
       .send({ email: 'rgtdyb@163.com', password: '123' })
@@ -219,7 +226,7 @@ describe('test/app/controller/user.test.js', () => {
       .expect(200)
       .expect({ errmsg: '修改成功', errcode: 0 });
 
-    // 获取用户信息来检验信息是否修改成功      
+    // 获取用户信息来检验信息是否修改成功
     // 这里如果把注释去掉，也会报错，报错说Error: expected 200 "OK", got 401 "Unauthorized" ， 感觉还是那个识别问题。打开数据库看确实是头像，名字修改完成了的
     // const res2 = await app.httpRequest()
     //   .get('/users')
