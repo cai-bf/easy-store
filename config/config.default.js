@@ -63,6 +63,15 @@ module.exports = appInfo => {
     // validateRoot: false,
   };
 
+  config.multipart = {
+    fileSize: '8mb',
+    whitelist: [
+      '.png',
+      '.jpg',
+      '.jpeg'
+    ],
+  };
+
   return {
     ...config,
   };

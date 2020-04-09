@@ -34,4 +34,7 @@ module.exports = app => {
   router.put('/admin/category/:id', middleware.adminAuth, controller.category.modify); // 修改分类
   router.delete('/admin/category/:id', middleware.adminAuth, controller.category.destroy); // 删除分类
   router.get('/categories', controller.category.index); // 获取分类
+
+  // 上传
+  router.post('/pictures', controller.attachment.upload); // 上传图片
 };
