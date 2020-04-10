@@ -37,4 +37,8 @@ module.exports = app => {
 
   // 上传
   router.post('/pictures', controller.attachment.upload); // 上传图片
+
+  // 商品
+  router.get('/goods', controller.goods.index); // 首页商品列表
+  router.get('/goods/search', controller.goods.search); // 搜索商品
 };
