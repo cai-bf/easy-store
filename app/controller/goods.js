@@ -30,7 +30,13 @@ class GoodsController extends Controller {
     const { ctx } = this;
     const goods_id = parseInt(ctx.params.id);
     const data = await ctx.service.goods.getDetail(goods_id);
-    
+    if (data === null) {
+      ctx.body = util.makeRes('不存在该商品或已下架', 400);
+      ctx.status = 400;
+      return;
+    }
+    ctx.body = util.makeRes('获取成功', 0, { data });
+    ctx.status = 200;
   }
 }
 

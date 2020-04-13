@@ -42,7 +42,75 @@ class GoodsService extends Service {
 
   // 详情
   async getDetail(goods_id) {
-    
+    const goods = await this.app.model.Goods.findOne({
+      where: {
+        id: goods_id
+      },
+      include: [
+        {
+          model: this.app.model.Specification,
+          as: 'specifications',
+          attributes: ['id', ['name', 'k'], ['name', 'k_s']],
+          include: [
+            {
+              model: this.app.model.Option,
+              as: 'options',
+              attributes: ['id', 'name']
+            }
+          ]
+        },
+        {
+          model: this.app.model.Sku,
+          as: 'sku',
+          attributes: ['id', 'price', 'stock_num'],
+          include: [
+            {
+              model: this.app.model.SkuSpec,
+              as: 'sku_spec',
+              include: [
+                {
+                  model: this.app.model.Specification,
+                  as: 'specification'
+                },
+                {
+                  model: this.app.model.Option,
+                  as: 'option'
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }).then(res => {
+      if (res === null)
+        return null;
+      // 修改属性名
+      res = res.toJSON();
+      res.tree = res.specifications;
+      delete res.specifications;
+      for (const spec of res.tree) {
+        spec.v = spec.options;
+        delete spec.options;
+      }
+      res.list = res.sku;
+      delete res.sku;
+      // 判断是否有规格
+      if (res.tree.length === 0) {
+        delete res.tree;
+        res.collection_id = res.list[0].id;
+        delete res.list;
+        console.log(res);
+      } else {
+        for (const sku of res.list) {
+          for (const sku_s of sku.sku_spec) {
+            sku[sku_s.specification.name] = sku_s.option.id;
+          }
+          delete sku.sku_spec;
+        }
+      }
+      return res;
+    });
+    return goods;
   }
 }
 

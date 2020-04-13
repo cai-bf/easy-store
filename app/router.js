@@ -41,4 +41,5 @@ module.exports = app => {
   // 商品
   router.get('/goods', controller.goods.index); // 首页商品列表
   router.get('/goods/search', controller.goods.search); // 搜索商品
+  router.get('/goods/:id', controller.goods.getDetail); // 获取商品详情
 };
