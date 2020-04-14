@@ -162,16 +162,19 @@ class GoodsService extends Service {
       {
         model: this.app.model.Category,
         as: 'category',
+        attributes: { exclude: ['created_at', 'updated_at'] }
       },
       {
         model: this.app.model.Sku,
         as: 'sku',
         paranoid: parseInt(overdue) === 1 ? false : true,
+        attributes: { exclude: ['created_at', 'updated_at', 'deleted_at'] },
         include: [
           {
             model: this.app.model.Option,
             as: 'options',
             paranoid: parseInt(overdue) === 1 ? false : true,
+            attributes: { exclude: ['created_at', 'updated_at', 'deleted_at'] },
             through: { attributes: [] }
           }
         ]
@@ -180,15 +183,17 @@ class GoodsService extends Service {
         model: this.app.model.Specification,
         as: 'specifications',
         paranoid: parseInt(overdue) === 1 ? false : true,
+        attributes: { exclude: ['created_at', 'updated_at', 'deleted_at'] },
         include: [
           {
             model: this.app.model.Option,
-            as: 'options'
+            as: 'options',
+            attributes: { exclude: ['created_at', 'updated_at', 'deleted_at'] },
           }
         ]
       }
     ];
-    params.attributes = { exclude: ['description'] };
+    params.attributes = { exclude: ['description', 'deleted_at'] };
     const data = await this.ctx.model.Goods.findAndCountAll(params).then(res => {
       const rows = [];
       for (const item of res.rows) {
