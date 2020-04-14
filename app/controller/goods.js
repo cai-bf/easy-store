@@ -67,6 +67,20 @@ class GoodsController extends Controller {
     ctx.body = util.makeRes('获取列表成功', 0, { data });
     ctx.status = 200;
   }
+
+  // 管理端商品详情
+  async detail_admin() {
+    const { ctx } = this;
+    const goods_id = parseInt(ctx.params.id);
+    const data = await ctx.service.goods.getDetailAdmin(goods_id);
+    if (data === null) {
+      ctx.body = util.makeRes('不存在该商品或已下架', 400);
+      ctx.status = 400;
+      return;
+    }
+    ctx.body = util.makeRes('获取成功', 0, { data });
+    ctx.status = 200;
+  }
 }
 
 module.exports = GoodsController;
