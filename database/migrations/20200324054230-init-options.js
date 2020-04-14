@@ -19,6 +19,7 @@ module.exports = {
       },
       created_at: DATE,
       updated_at: DATE,
+      deleted_at: DATE
     });
   },
 

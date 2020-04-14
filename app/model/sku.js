@@ -62,7 +62,7 @@ module.exports = app => {
 
   Sku.associate = () => {
     app.model.Sku.belongsTo(app.model.Goods, { as: 'goods', foreignKey: 'goods_id' });
-    app.model.Sku.belongsToMany(app.model.Option, { as: 'option', through: app.model.SkuSpec });
+    app.model.Sku.belongsToMany(app.model.Option, { as: 'options', through: app.model.SkuSpec });
     app.model.Sku.hasMany(app.model.SkuSpec, { as: 'sku_spec', foreignKey: 'sku_id' });
   };
 

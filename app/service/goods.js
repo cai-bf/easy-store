@@ -112,6 +112,105 @@ class GoodsService extends Service {
     });
     return goods;
   }
+
+  async index_admin(category_id, page, sort, desc, overdue, keyword) {
+    let params = {};
+    // 分页处理
+    params.limit = 20;
+    params.offset = (parseInt(page) - 1) * 20;
+    // 去除重复计算关联
+    params.distinct = true;
+    // 类别处理
+    if (parseInt(category_id) !== 0) {
+      const category = await this.app.model.Category.findByPk(category_id);
+      if (category.parent_id === 0) {
+        let tmp = [];
+        for (const ca of await category.getChildren()) {
+          tmp.push(ca.id);
+        }
+        params.where = { category_id: { [this.app.Sequelize.Op.in]: tmp } };
+      } else {
+        params.where = { category_id: parseInt(category_id) };
+      }
+    }
+    // 排序处理
+    let literal, _desc;
+    if (parseInt(sort) === 0)
+      literal = 'created_at';
+    else if (parseInt(sort) === 1)
+      literal = 'sale_num';
+    else if (parseInt(sort) === 2)
+      literal = 'view';
+    else
+      literal = 'stock_num';
+    if (parseInt(desc) === 0)
+      _desc = ' ASC';
+    else
+      _desc = ' DESC';
+    params.order = this.app.Sequelize.literal(literal + _desc);
+    // 处理下架商品
+    if (parseInt(overdue) === 1) {
+      params.paranoid = false;
+      params.where = Object.assign(params.where || {}, { deleted_at: { [this.app.Sequelize.Op.not]: null } });
+    }
+    // 处理搜索词
+    if (keyword !== null)
+      params.where = Object.assign(params.where || {}, { name: { [this.app.Sequelize.Op.substring]: keyword } });
+    // 关联
+    params.include = [
+      { 
+        model: this.app.model.Category, 
+        as: 'category',
+      },
+      {
+        model: this.app.model.Sku,
+        as: 'sku',
+        paranoid: parseInt(overdue) === 1 ? false : true,
+        include: [
+          {
+            model: this.app.model.Option,
+            as: 'options',
+            paranoid: parseInt(overdue) === 1 ? false : true,
+            through: { attributes: [] }
+          }
+        ]
+      },
+      {
+        model: this.app.model.Specification,
+        as: 'specifications',
+        paranoid: parseInt(overdue) === 1 ? false : true,
+        include: [
+          {
+            model: this.app.model.Option,
+            as: 'options'
+          }
+        ]
+      }
+    ];
+    params.attributes = { exclude: ['description'] };
+    const data = await this.ctx.model.Goods.findAndCountAll(params).then(res => {
+      const rows = [];
+      for (const item of res.rows) {
+        rows.push(item.toJSON());
+      }
+      res = {
+        rows: rows.length,
+        items: rows,
+        count: res.count
+      };
+      for (let item of res.items) {
+        item.pic = JSON.parse(item.pic);
+        if (item.specifications.length === 0) {
+          item.has_spec = false;
+          item.sku_id = item.sku[0].id;
+        } else {
+          item.has_spec = true;
+        }
+      }
+      return res;
+    });
+    return data;
+  }
 }
 
 module.exports = GoodsService;

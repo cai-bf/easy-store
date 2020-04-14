@@ -42,4 +42,6 @@ module.exports = app => {
   router.get('/goods', controller.goods.index); // 首页商品列表
   router.get('/goods/search', controller.goods.search); // 搜索商品
   router.get('/goods/:id', controller.goods.getDetail); // 获取商品详情
+  router.get('/admin/goods', middleware.adminAuth, controller.goods.index_admin); // 管理端商品列表
+  router.get('/admin/goods/search', middleware.adminAuth, controller.goods.search_admin); // 管理端搜索商品
 };

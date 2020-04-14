@@ -31,11 +31,19 @@ module.exports = app => {
         return moment(this.getDataValue('update_at')).format('YYYY-MM-DD HH:mm:ss');
       },
     },
+    deleted_at: {
+      type: DATE,
+      get() {
+        return moment(this.getDataValue('deleted_at')).format('YYYY-MM-DD HH:mm:ss');
+      },
+    },
   }, {
     underscored: true,
+    paranoid: true,
     tableName: 'options',
     createdAt: 'created_at',
     updatedAt: 'updated_at',
+    deletedAt: 'deleted_at',
   });
 
   Option.associate = () => {
