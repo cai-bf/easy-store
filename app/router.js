@@ -45,4 +45,6 @@ module.exports = app => {
   router.get('/admin/goods', middleware.adminAuth, controller.goods.index_admin); // 管理端商品列表
   router.get('/admin/goods/search', middleware.adminAuth, controller.goods.search_admin); // 管理端搜索商品
   router.get('/admin/goods/:id', middleware.adminAuth, controller.goods.detail_admin); // 管理端商品详情
+  router.post('/admin/goods', middleware.adminAuth, controller.goods.create); // 新增商品
+  router.post('/admin/goods/sku/:id/stock', middleware.adminAuth, controller.goods.increment); // 新增入库
 };

@@ -275,6 +275,81 @@ class GoodsService extends Service {
     });
     return goods;
   }
+
+  // 新增商品
+  async create() {
+    const { ctx } = this;
+    const data = ctx.request.body;
+    // 创建goods
+    const goods = await ctx.model.Goods.create({
+      name: data.name,
+      pic: JSON.stringify(data.pic),
+      description: data.description,
+      category_id: data.category_id,
+      price: data.price
+    });
+    if (data.has_spec) {
+      // 创建规格
+      for (let i = 0; i < data.spec_num; i++) {
+        data.spec[i] = await ctx.model.Specification.create({
+          goods_id: goods.id,
+          name: data.spec[i]
+        });
+      }
+      // 创建规格选项
+      for (let j = 0; j < data.spec_num; j++) {
+        for (let i = 0; i < data.options[j].length; i++) {
+          data.options[j][i] = await ctx.model.Option.create({
+            spec_id: data.spec[j].id,
+            name: data.options[j][i]
+          });
+        }
+      }
+      // 创建sku
+      for (const sku of data.sku) {
+        let new_sku = await ctx.model.Sku.create({
+          goods_id: goods.id,
+          price: sku.price,
+          purchase_price: sku.purchase_price
+        });
+        // 关联sku, spec, option
+        for (let i = 0; i < sku.spec.length; i++) {
+          await ctx.model.SkuSpec.create({
+            sku_id: new_sku.id,
+            spec_id: data.spec[i].id,
+            option_id: data.options[i][sku.spec[i]].id
+          });
+        }
+        // 新增入库
+        await ctx.service.goods.put_storage(new_sku.id, sku.stock_num);
+      }
+    } else {
+      // 无规格商品
+      const sku = await ctx.model.Sku.create({
+        goods_id: goods.id,
+        price: data.price,
+        purchase_price: data.purchase_price
+      });
+      await ctx.service.goods.put_storage(sku.id, data.stock_num);
+    }
+  }
+
+  // 新增入库
+  async put_storage(sku_id, num) {
+    const { ctx } = this;
+    const sku = await ctx.model.Sku.findByPk(sku_id);
+    if (sku === null)
+      return false;
+    await sku.increment({ stock_num: num });
+    const goods = await sku.getGoods();
+    await goods.increment({ stock_num: num });
+    await ctx.model.Record.create({
+      sku_id: sku_id,
+      num: num,
+      price: num * sku.purchase_price
+    });
+    return true;
+  }
 }
 
 module.exports = GoodsService;

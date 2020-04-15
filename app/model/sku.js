@@ -22,12 +22,12 @@ module.exports = app => {
     stock_num: {
       type: INTEGER,
       allowNull: false,
-      defaultValue: 1,
+      defaultValue: 0,
     },
     sale_num: {
       type: INTEGER,
       allowNull: false,
-      defaultValue: 1,
+      defaultValue: 0,
     },
     purchase_price: {
       type: DECIMAL(12, 2),

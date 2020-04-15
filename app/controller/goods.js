@@ -81,6 +81,69 @@ class GoodsController extends Controller {
     ctx.body = util.makeRes('获取成功', 0, { data });
     ctx.status = 200;
   }
+
+  // 增加商品
+  async create() {
+    const roles = {
+      name: { type: 'string', max: 50 },
+      pic: { type: 'array', itemType: 'url' },
+      description: 'string',
+      category_id: 'int',
+      has_spec: 'bool',
+      spec_num: { type: 'int', required: false },
+      spec: { type: 'array', itemType: 'string', required: false },
+      options: { type: 'array', itemType: 'array', required: false },
+      sku: { type: 'array', required: false, itemType: 'object', rule: {
+        spec: { type: 'array', itemType: 'int' },
+        stock_num: 'int',
+        price: 'number',
+        purchase_price: 'number'
+      } },
+      price: 'number',
+      stock_num: { type: 'int', required: false },
+      purchase_price: { type: 'number', required: false }
+    };
+    try {
+      this.ctx.validate(roles);
+    } catch (e) {
+      this.ctx.status = 400;
+      this.ctx.body = util.makeRes('参数错误, 请检查重试 ' + e.toString(), 400, {});
+      return;
+    }
+    // 检测分类
+    const category = await this.app.model.Category.findByPk(this.ctx.request.body.category_id);
+    if (category === null || category.parent_id === 0) {
+      this.ctx.status = 400;
+      this.ctx.body = util.makeRes('分类错误, 请检查重试', 400, {});
+      return;
+    }
+    // 检测规格选项
+    if (this.ctx.request.body.has_spec && this.ctx.request.body.spec.length !== this.ctx.request.body.options.length) {
+      this.ctx.status = 400;
+      this.ctx.body = util.makeRes('规格选项错误, 请检查重试', 400, {});
+      return;
+    }
+    // 创建商品
+    await this.ctx.service.goods.create();
+
+    this.ctx.body = util.makeRes('新增商品成功', 0);
+    this.ctx.status = 200;
+  }
+
+  // 新增入库
+  async increment() {
+    const sku_id = parseInt(this.ctx.params.id);
+    const num = this.ctx.request.body.num;
+
+    const res = await this.ctx.service.goods.put_storage(sku_id, num);
+    if (res) {
+      this.ctx.body = util.makeRes('入库成功', 0);
+      this.ctx.status = 200;
+    } else {
+      this.ctx.body = util.makeRes('参数错误, 请检查', 400);
+      this.ctx.status = 400;
+    }
+  }
 }
 
 module.exports = GoodsController;
