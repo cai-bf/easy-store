@@ -74,7 +74,7 @@ class GoodsController extends Controller {
     const goods_id = parseInt(ctx.params.id);
     const data = await ctx.service.goods.getDetailAdmin(goods_id);
     if (data === null) {
-      ctx.body = util.makeRes('不存在该商品或已下架', 400);
+      ctx.body = util.makeRes('不存在该商品', 400);
       ctx.status = 400;
       return;
     }
@@ -93,12 +93,14 @@ class GoodsController extends Controller {
       spec_num: { type: 'int', required: false },
       spec: { type: 'array', itemType: 'string', required: false },
       options: { type: 'array', itemType: 'array', required: false },
-      sku: { type: 'array', required: false, itemType: 'object', rule: {
-        spec: { type: 'array', itemType: 'int' },
-        stock_num: 'int',
-        price: 'number',
-        purchase_price: 'number'
-      } },
+      sku: {
+        type: 'array', required: false, itemType: 'object', rule: {
+          spec: { type: 'array', itemType: 'int' },
+          stock_num: 'int',
+          price: 'number',
+          purchase_price: 'number'
+        }
+      },
       price: 'number',
       stock_num: { type: 'int', required: false },
       purchase_price: { type: 'number', required: false }
@@ -163,10 +165,15 @@ class GoodsController extends Controller {
       return;
     }
     // 判断商品
-    const goods = await ctx.model.Goods.findByPk(parseInt(ctx.params.id));
+    const goods = await ctx.model.Goods.findOne({
+      paranoid: false,
+      where: {
+        id: parseInt(ctx.params.goods_id)
+      }
+    });
     if (goods === null) {
       ctx.status = 400;
-      ctx.body = util.makeRes('商品不存在或已下架', 400, {});
+      ctx.body = util.makeRes('商品不存在', 400, {});
       return;
     }
     // 验证分类
@@ -182,6 +189,47 @@ class GoodsController extends Controller {
     await ctx.service.goods.update(ctx.request.body, goods);
 
     ctx.body = util.makeRes('修改成功', 0);
+    ctx.status = 200;
+  }
+
+  // 更新sku
+  async updateSku() {
+    const { ctx } = this;
+    // 检测商品
+    const goods = await ctx.model.Goods.findOne({
+      paranoid: false,
+      where: {
+        id: parseInt(ctx.params.goods_id)
+      }
+    });
+    if (goods === null) {
+      ctx.status = 400;
+      ctx.body = util.makeRes('商品不存在', 400, {});
+      return;
+    }
+    // 检测sku
+    const sku = await goods.getSku({ where: { id: parseInt(ctx.params.sku_id) } });
+    if (sku.length === 0) {
+      ctx.status = 400;
+      ctx.body = util.makeRes('不存在该库存单位', 400, {});
+      return;
+    }
+    // 验证参数
+    const roles = {
+      price: { type: 'number', required: false },
+      purchase_price: { type: 'number', required: false }
+    };
+    try {
+      ctx.validate(roles);
+    } catch (e) {
+      ctx.status = 400;
+      ctx.body = util.makeRes('参数错误, 请检查重试', 400, {});
+      return;
+    }
+    
+    await ctx.service.goods.updateSku(goods, sku[0], ctx.request.body);
+
+    ctx.body = util.makeRes('更新成功', 0);
     ctx.status = 200;
   }
 }

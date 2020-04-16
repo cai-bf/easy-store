@@ -48,4 +48,5 @@ module.exports = app => {
   router.post('/admin/goods', middleware.adminAuth, controller.goods.create); // 新增商品
   router.post('/admin/goods/sku/:id/stock', middleware.adminAuth, controller.goods.increment); // 新增入库
   router.put('/admin/goods/:id', middleware.adminAuth, controller.goods.update); // 更新商品
+  router.put('/admin/goods/:goods_id/sku/:sku_id', middleware.adminAuth, controller.goods.updateSku); // 更新sku
 };

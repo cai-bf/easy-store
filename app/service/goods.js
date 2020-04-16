@@ -363,8 +363,30 @@ class GoodsService extends Service {
       params.description = data.description;
     if (data.category_id)
       params.category_id = data.category_id;
-    
+
     await goods.update(params);
+  }
+
+  // 更新sku
+  async updateSku(goods, sku, data) {
+    let params = {};
+    if (data.price)
+      params.price = data.price;
+    if (data.purchase_price)
+      params.purchase_price = data.purchase_price;
+
+    let old_price = sku.price;
+    await sku.update(params);
+    if (data.price) {
+      if (goods.price > data.price)
+        await goods.update({ price: data.price });
+      else if (old_price === goods.price) {
+        const min_ = await this.ctx.model.Sku.min('price', { where: { goods_id: goods.id } });
+        console.log(min_);
+        if (goods.price < min_)
+          await goods.update({ price: min_ });
+      }
+    }
   }
 }
 
