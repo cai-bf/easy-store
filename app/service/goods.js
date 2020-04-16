@@ -34,7 +34,8 @@ class GoodsService extends Service {
       return {
         items: res.rows,
         rows: res.rows.length,
-        count: res.count
+        count: res.count,
+        page: page
       };
     });
     return data;
@@ -202,7 +203,8 @@ class GoodsService extends Service {
       res = {
         rows: rows.length,
         items: rows,
-        count: res.count
+        count: res.count,
+        page: page
       };
       for (let item of res.items) {
         item.pic = JSON.parse(item.pic);

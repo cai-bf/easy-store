@@ -51,4 +51,7 @@ module.exports = app => {
   router.put('/admin/goods/:goods_id/sku/:sku_id', middleware.adminAuth, controller.goods.updateSku); // 更新sku
   router.delete('/admin/goods/:id', middleware.adminAuth, controller.goods.destroy); // 下架商品
   router.post('/admin/goods/:id/putaway', middleware.adminAuth, controller.goods.rePutaway); // 重新上架
+
+  // 入库记录
+  router.get('/admin/records', middleware.adminAuth, controller.record.index); // 入库记录列表
 };
