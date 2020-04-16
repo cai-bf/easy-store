@@ -63,7 +63,9 @@ module.exports = app => {
     deleted_at: {
       type: DATE,
       get() {
-        return moment(this.getDataValue('deleted_at')).format('YYYY-MM-DD HH:mm:ss');
+        return this.getDataValue('deleted_at') === null ?
+              null
+              : moment(this.getDataValue('deleted_at')).format('YYYY-MM-DD HH:mm:ss');
       },
     },
   }, {

@@ -232,6 +232,44 @@ class GoodsController extends Controller {
     ctx.body = util.makeRes('更新成功', 0);
     ctx.status = 200;
   }
+
+  // 下架商品
+  async destroy() {
+    const { ctx } = this;
+    // 检测商品
+    const goods = await ctx.model.Goods.findByPk(parseInt(ctx.params.id));
+    if (goods === null) {
+      ctx.status = 400;
+      ctx.body = util.makeRes('商品不存在或已下架', 400, {});
+      return;
+    }
+    await goods.destroy();
+
+    ctx.body = util.makeRes('下架成功', 0);
+    ctx.status = 200;
+  }
+  
+  // 重新上架
+  async rePutaway() {
+    const { ctx } = this;
+    // 检测商品
+    const goods = await ctx.model.Goods.findOne({
+      paranoid: false,
+      where: {
+        id: parseInt(ctx.params.id)
+      }
+    });
+    if (goods === null || goods.deleted_at === null) {
+      ctx.status = 400;
+      ctx.body = util.makeRes('商品不存在或未下架', 400, {});
+      return;
+    }
+
+    await goods.restore();
+
+    ctx.body = util.makeRes('重新上架成功', 0);
+    ctx.status = 200;
+  }
 }
 
 module.exports = GoodsController;
