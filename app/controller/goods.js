@@ -107,7 +107,7 @@ class GoodsController extends Controller {
       this.ctx.validate(roles);
     } catch (e) {
       this.ctx.status = 400;
-      this.ctx.body = util.makeRes('参数错误, 请检查重试 ' + e.toString(), 400, {});
+      this.ctx.body = util.makeRes('参数错误, 请检查重试', 400, {});
       return;
     }
     // 检测分类
@@ -143,6 +143,46 @@ class GoodsController extends Controller {
       this.ctx.body = util.makeRes('参数错误, 请检查', 400);
       this.ctx.status = 400;
     }
+  }
+
+  // 更新商品
+  async update() {
+    const { ctx } = this;
+    const roles = {
+      name: { type: 'string', max: 50, required: false },
+      pic: { type: 'array', itemType: 'url', required: false },
+      description: { type: 'string', required: false },
+      category_id: { type: 'int', required: false }
+    }
+    // 验证参数
+    try {
+      ctx.validate(roles);
+    } catch (e) {
+      ctx.status = 400;
+      ctx.body = util.makeRes('参数错误, 请检查重试', 400, {});
+      return;
+    }
+    // 判断商品
+    const goods = await ctx.model.Goods.findByPk(parseInt(ctx.params.id));
+    if (goods === null) {
+      ctx.status = 400;
+      ctx.body = util.makeRes('商品不存在或已下架', 400, {});
+      return;
+    }
+    // 验证分类
+    if (ctx.request.body.category_id) {
+      const category = await ctx.model.Category.findByPk(parseInt(ctx.request.body.category_id));
+      if (category === null || category.parent_id === 0) {
+        ctx.status = 400;
+        ctx.body = util.makeRes('类别出错, 请重新确认', 400, {});
+        return;
+      }
+    }
+
+    await ctx.service.goods.update(ctx.request.body, goods);
+
+    ctx.body = util.makeRes('修改成功', 0);
+    ctx.status = 200;
   }
 }
 

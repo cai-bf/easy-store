@@ -350,6 +350,22 @@ class GoodsService extends Service {
     });
     return true;
   }
+
+  // 更新商品
+  async update(data, goods) {
+    let params = {};
+    if (data.name) {
+      params.name = data.name;
+    }
+    if (data.pic)
+      params.pic = JSON.stringify(data.pic);
+    if (data.description)
+      params.description = data.description;
+    if (data.category_id)
+      params.category_id = data.category_id;
+    
+    await goods.update(params);
+  }
 }
 
 module.exports = GoodsService;
