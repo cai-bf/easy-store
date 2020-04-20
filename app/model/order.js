@@ -76,8 +76,8 @@ module.exports = app => {
 
   Order.associate = () => {
     app.model.Order.belongsTo(app.model.User, { as: 'user', foreignKey: 'user_id' });
-    app.model.Order.belongsTo(app.model.Category, { as: 'category', foreignKey: 'category_id' });
     app.model.Order.hasMany(app.model.Item, { as: 'items', foreignKey: 'order_id' });
+    app.model.Order.belongsTo(app.model.Address, { as: 'address', foreignKey: 'address_id' });
   };
 
   return Order;

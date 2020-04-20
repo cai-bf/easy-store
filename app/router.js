@@ -54,4 +54,8 @@ module.exports = app => {
 
   // 入库记录
   router.get('/admin/records', middleware.adminAuth, controller.record.index); // 入库记录列表
+
+  // 订单
+  router.get('/orders', middleware.userAuth, controller.order.index); // 获取订单列表
+  
 };
