@@ -41,7 +41,7 @@ module.exports = app => {
   });
 
   Category.associate = () => {
-    app.model.Category.hasMany(app.model.Category, { as: 'children', foreignKey: 'parent_id' });
+    app.model.Category.hasMany(app.model.Category, { as: 'childrens', foreignKey: 'parent_id' });
     app.model.Category.belongsTo(app.model.Category, { as: 'parent', foreignKey: 'parent_id' });
     app.model.Category.hasMany(app.model.Goods, { as: 'goods', foreignKey: 'category_id' });
   };
