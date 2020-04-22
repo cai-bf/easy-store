@@ -24,7 +24,7 @@ class CategoryService extends Service {
     const from = await this.ctx.model.Category.findByPk(id);
     if (change_id === undefined) { // 直接删除
       if (from.parent_id === 0) {
-        const categoryies = await from.getChildren();
+        const categoryies = await from.getChildrens();
         const ids = [];
         for (const c of categoryies) {
           ids.push(c.id);
