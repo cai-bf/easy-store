@@ -49,6 +49,11 @@ class GoodsService extends Service {
       },
       include: [
         {
+          model: this.app.model.Category,
+          as: 'category',
+          attributes: ['id', 'name', 'parent_id']
+        },
+        {
           model: this.app.model.Specification,
           as: 'specifications',
           attributes: ['id', ['name', 'k'], ['name', 'k_s']],
