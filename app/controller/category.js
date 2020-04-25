@@ -71,7 +71,7 @@ class CategoryController extends Controller {
       },
       include: [{
         model: ctx.model.Category,
-        as: 'children',
+        as: 'childrens',
       }],
     });
     ctx.body = util.makeRes('获取成功', 0, { data });
