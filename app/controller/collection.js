@@ -20,9 +20,15 @@ class CollectionController extends Controller {
         const user_id = ctx.current_user.id;
         const data = ctx.request.body;
 
-        await ctx.service.collection.create(user_id, data);
-        ctx.body = util.makeRes('添加成功', 0, {});
-        ctx.status = 200;
+        const res = await ctx.service.collection.create(user_id, data);
+        if (res.ok) {
+            ctx.body = util.makeRes(res.msg, 0, {});
+            ctx.status = 200;
+        }
+        else {
+            ctx.body = util.makeRes(res.msg, 400, {});
+            ctx.status = 400;
+        }
         return;
     }
 

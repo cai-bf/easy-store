@@ -3,9 +3,20 @@
 const Service = require('egg').Service;
 
 class CollectionService extends Service {
-    async create(user_id, data) {
-        await this.ctx.model.Collection.create({ ...data, user_id: user_id });
-        return;
+    async create(user_id, data) { //未完善
+        let item = await this.ctx.model.Collection.findOne({
+            where: {
+                goods_id:data.goods_id,
+                user_id: user_id
+            },
+          });
+        if(item){
+            return { ok: false, msg: '该商品已在收藏中' };
+        }
+        else{
+            await this.ctx.model.Collection.create({ ...data, user_id: user_id });
+            return { ok: true, msg: '添加收藏成功' };
+        }
     }
 
     async destroy(id) {
