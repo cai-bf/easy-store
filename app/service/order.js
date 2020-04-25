@@ -95,6 +95,74 @@ class OrderService extends Service {
       return false;
     }
   }
+
+  async admin_index(page, status, key) {
+    let params = {};
+    params.limit = 20;
+    params.offset = (page - 1) * 20;
+    console.log(status);
+    if (status !== 0)
+      params.where = { status: status };
+    if (key)
+      params.where = Object.assign(params.where || {}, { order_number: key });
+    params.order = this.app.Sequelize.literal('id DESC');
+
+    params.attributes = { exclude: ['deleted_at'] };
+    params.distinct = true;
+    params.include = [
+      {
+        model: this.app.model.Address,
+        as: 'address',
+        attributes: { exclude: ['created_at', 'updated_at', 'default'] }
+      },
+      {
+        model: this.app.model.User,
+        as: 'user',
+        attributes: ['id', 'name', 'avatar']
+      },
+      {
+        model: this.app.model.Item,
+        as: 'items',
+        attributes: { exclude: ['created_at', 'updated_at', 'deleted_at'] },
+        include: [
+          {
+            model: this.app.model.Sku,
+            as: 'sku',
+            attributes: ['id', 'price'],
+            include: [
+              {
+                model: this.app.model.Goods,
+                as: 'goods',
+                attributes: ['id', 'name', 'pic']
+              },
+              {
+                model: this.app.model.Option,
+                as: 'options',
+                attributes: { exclude: ['created_at', 'updated_at', 'deleted_at'] },
+                through: { attributes: [] }
+              }
+            ]
+          },
+          {
+            model: this.app.model.Comment,
+            as: 'comment',
+            attributes: ['id', 'content']
+          }
+        ]
+      }
+    ];
+
+    const data = await this.app.model.Order.findAndCountAll(params).then(res => {
+      return {
+        items: res.rows,
+        rows: res.rows.length,
+        count: res.count,
+        page: page
+      };
+    });
+
+    return data;
+  }
 }
 
 module.exports = OrderService;
