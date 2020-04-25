@@ -37,13 +37,13 @@ module.exports = app => {
       defaultValue: 0,
     },
     stock_num: {
-      type: INTEGER,
+      type: INTEGER.UNSIGNED,
       allowNull: false,
       defaultValue: 0,
       comment: '总库存',
     },
     sale_num: {
-      type: INTEGER,
+      type: INTEGER.UNSIGNED,
       allowNull: false,
       defaultValue: 0,
       comment: '总销量',

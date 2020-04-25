@@ -18,12 +18,12 @@ module.exports = {
         allowNull: false,
       },
       stock_num: {
-        type: INTEGER,
+        type: INTEGER.UNSIGNED,
         allowNull: false,
         defaultValue: 1,
       },
       sale_num: {
-        type: INTEGER,
+        type: INTEGER.UNSIGNED,
         allowNull: false,
         defaultValue: 1,
       },

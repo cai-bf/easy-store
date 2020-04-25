@@ -57,5 +57,12 @@ module.exports = app => {
 
   // 订单
   router.get('/orders', middleware.userAuth, controller.order.index); // 获取订单列表
-  
+  router.post('/orders', middleware.userAuth, controller.order.create); // 创建订单
+  router.post('/order/:id/refund', middleware.userAuth, controller.order.refund); // 申请退款
+  router.post('/order/:id/recv', middleware.userAuth, controller.order.recv); // 确认收货
+  router.post('/order/item/:id/comment', middleware.userAuth, controller.order.comment); // 评价
+  router.get('/admin/orders', middleware.adminAuth, controller.order.admin_index); // 管理端列表
+  router.get('/admin/orders/search', middleware.adminAuth, controller.order.admin_search); // 管理端搜索
+  router.put('/admin/order/:id/deliver', middleware.adminAuth, controller.order.admin_deliver); // 发货
+  router.post('/admin/order/:id/refund', middleware.adminAuth, controller.order.admin_refund); // 确认退款
 };
