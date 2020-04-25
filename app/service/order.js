@@ -163,6 +163,17 @@ class OrderService extends Service {
 
     return data;
   }
+
+  async admin_refund(order) {
+    for (const item of await order.getItems()) {
+      let sku = await item.getSku();
+      let goods = await sku.getGoods();
+      await sku.increment('stock_num', { by: item.num });
+      await goods.increment('stock_num', { by: item.num });
+      await item.destroy();
+    }
+    await order.destroy();
+  }
 }
 
 module.exports = OrderService;

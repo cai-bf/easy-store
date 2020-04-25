@@ -223,7 +223,7 @@ class OrderController extends Controller {
       return;
     }
 
-    await order.destroy();
+    await this.ctx.service.order.admin_refund(order);
 
     this.ctx.status = 200;
     this.ctx.body = util.makeRes('退款成功', 0);
