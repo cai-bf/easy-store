@@ -57,5 +57,6 @@ module.exports = app => {
 
   // 订单
   router.get('/orders', middleware.userAuth, controller.order.index); // 获取订单列表
+  router.post('/orders', middleware.userAuth, controller.order.create); // 创建订单
   
 };

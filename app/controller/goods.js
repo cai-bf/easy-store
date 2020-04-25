@@ -84,7 +84,7 @@ class GoodsController extends Controller {
 
   // 增加商品
   async create() {
-    const roles = {
+    const rules = {
       name: { type: 'string', max: 50 },
       pic: { type: 'array', itemType: 'url' },
       description: 'string',
@@ -106,7 +106,7 @@ class GoodsController extends Controller {
       purchase_price: { type: 'number', required: false }
     };
     try {
-      this.ctx.validate(roles);
+      this.ctx.validate(rules);
     } catch (e) {
       this.ctx.status = 400;
       this.ctx.body = util.makeRes('参数错误, 请检查重试', 400, {});

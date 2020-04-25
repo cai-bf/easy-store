@@ -57,6 +57,44 @@ class OrderService extends Service {
     });
     return { data: data };
   }
+
+  async create(data) {
+    const t = await this.ctx.model.transaction();
+    try {
+      const order = await this.ctx.model.Order.create({
+        user_id: this.ctx.current_user.id,
+        order_number: Math.random().toString().substr(2),
+        price: 0,
+        address_id: data.address_id,
+        status: 1,
+        remark: data.remark || null
+      }, { transaction: t });
+      for (const item of data.goods) {
+        await this.ctx.model.Goods.decrement('stock_num',
+               { by: item.num, where: {id: item.goods_id}, transaction: t });
+        let sku = await this.ctx.model.Sku.findByPk(item.sku_id);
+        await sku.decrement('stock_num', { by: item.num, transaction: t });
+        await order.increment('price', { by: item.num * sku.price, transaction: t });
+        await this.ctx.model.Item.create({
+          order_id: order.id,
+          sku_id: sku.id,
+          num: item.num,
+          price: sku.price * item.num
+        }, { transaction: t });
+      }
+      await t.commit();
+      if (data.from_cart) {
+        for (const item of item.goods) {
+          await this.ctx.model.Cart.destroy({ where: { user_id: this.ctx.current_user.id, sku_id: item.sku_id } });
+        }
+      }
+      return true;
+    } catch (err) {
+      console.log(err);
+      await t.rollback();
+      return false;
+    }
+  }
 }
 
 module.exports = OrderService;
