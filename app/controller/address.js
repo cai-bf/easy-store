@@ -81,8 +81,8 @@ class AddressController extends Controller {
     const data = await ctx.model.Address.findAll({
       where: {
         user_id: ctx.current_user.id,
-        order: [['id', 'desc']],
       },
+      order: [['id', 'desc']],
     });
     ctx.body = util.makeRes('获取成功', 0, { data });
     ctx.status = 200;
