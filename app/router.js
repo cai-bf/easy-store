@@ -70,6 +70,6 @@ module.exports = app => {
   router.get('/carts', middleware.userAuth, controller.cart.index); // 购物车列表
   router.post('/carts', middleware.userAuth, controller.cart.create); // 加入购物车
   router.put('/carts/:id', middleware.userAuth, controller.cart.update); // 更新数量
-  router.delete('/carts/:id', middleware.userAuth, controller.cart.destroy); // 删除
-  
+  router.delete('/carts', middleware.userAuth, controller.cart.destroy); // 删除
+
 };

@@ -49,11 +49,12 @@ class CartController extends Controller {
 
   // delete
   async destroy() {
-    const cart_id = this.ctx.params.id;
-    const ok = await this.ctx.service.cart.destroy(cart_id);
+    const cart_ids = this.ctx.request.body.ids;
+    
+    await this.ctx.service.cart.destroy(cart_ids);
 
-    this.ctx.status = ok ? 200 : 400;
-    this.ctx.body = util.makeRes(ok ? '删除成功' : '参数错误', ok ? 0 : 400);
+    this.ctx.status = 200;
+    this.ctx.body = util.makeRes('删除成功', 0);
 
   }
 }

@@ -90,12 +90,13 @@ class CartService extends Service {
     return { data: '更新成功', ok: true };
   }
 
-  async destroy(cart_id) {
-    const cart = await this.ctx.model.Cart.findByPk(cart_id);
-    if (cart === null || cart.user_id !== this.ctx.current_user.id)
-      return false;
-    await cart.destroy();
-    return true;
+  async destroy(cart_ids) {
+    for (const cart_id of cart_ids) {
+      const cart = await this.ctx.model.Cart.findByPk(cart_id);
+      if (cart === null || cart.user_id !== this.ctx.current_user.id)
+        continue;
+      await cart.destroy();
+    }
   }
 }
 
