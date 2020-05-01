@@ -168,7 +168,7 @@ class GoodsController extends Controller {
     const goods = await ctx.model.Goods.findOne({
       paranoid: false,
       where: {
-        id: parseInt(ctx.params.goods_id)
+        id: parseInt(ctx.params.id)
       }
     });
     if (goods === null) {
