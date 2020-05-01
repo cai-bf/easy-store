@@ -72,4 +72,8 @@ module.exports = app => {
   router.put('/carts/:id', middleware.userAuth, controller.cart.update); // 更新数量
   router.delete('/carts', middleware.userAuth, controller.cart.destroy); // 删除
 
+  // 轮播图
+  router.get('/carousel', controller.carousel.index); // index
+  router.post('/admin/carousel', middleware.adminAuth, controller.carousel.upload); // 设置轮播图
+  
 };
