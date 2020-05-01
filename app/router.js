@@ -65,4 +65,11 @@ module.exports = app => {
   router.get('/admin/orders/search', middleware.adminAuth, controller.order.admin_search); // 管理端搜索
   router.put('/admin/order/:id/deliver', middleware.adminAuth, controller.order.admin_deliver); // 发货
   router.post('/admin/order/:id/refund', middleware.adminAuth, controller.order.admin_refund); // 确认退款
+
+  // 购物车
+  router.get('/carts', middleware.userAuth, controller.cart.index); // 购物车列表
+  router.post('/carts', middleware.userAuth, controller.cart.create); // 加入购物车
+  router.put('/carts/:id', middleware.userAuth, controller.cart.update); // 更新数量
+  router.delete('/carts/:id', middleware.userAuth, controller.cart.destroy); // 删除
+  
 };
