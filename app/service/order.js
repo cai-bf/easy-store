@@ -84,7 +84,7 @@ class OrderService extends Service {
       }
       await t.commit();
       if (data.from_cart) {
-        for (const item of item.goods) {
+        for (const item of data.goods) {
           await this.ctx.model.Cart.destroy({ where: { user_id: this.ctx.current_user.id, sku_id: item.sku_id } });
         }
       }
