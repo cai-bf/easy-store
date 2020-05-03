@@ -31,6 +31,7 @@ module.exports = appInfo => {
     database: process.env.DB_NAME,
     username: process.env.DB_USER,
     password: process.env.DB_PASSWD,
+    timezone: '+08:00'
   };
 
   config.security = {
