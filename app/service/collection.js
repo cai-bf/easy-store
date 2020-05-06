@@ -37,11 +37,27 @@ class CollectionService extends Service {
             where: {
                 user_id: user_id,
             },
-            include: {
-                model: this.ctx.model.Goods,
-                as: 'goods',
-            },
+            include: [
+                {
+                    model: this.ctx.model.Goods,
+                    as: 'goods',
+                    attributes: ['id', 'name', 'pic', 'price', 'category_id'],
+                    include: [
+                        {
+                            model: this.ctx.model.Category,
+                            as: 'category',
+                            attributes: ['id', 'name']
+                        }
+                    ]
+                }
+            ],
             order: [['id', 'desc']],
+            attributes: ['id', 'goods_id']
+        }).then(res => {
+            for (const item of res) {
+                item.goods.pic = JSON.parse(item.goods.pic);
+            }
+            return res;
         });
 
         return data;
