@@ -67,6 +67,7 @@ class OrderController extends Controller {
 
   async refund() {
     const order_id = this.ctx.params.id;
+    const reason = thus.ctx.body.reason || '';
     const order = await this.ctx.model.Order.findByPk(parseInt(order_id));
     if (order === null || order.user_id !== this.ctx.current_user.id) {
       this.ctx.status = 400;
@@ -99,7 +100,7 @@ class OrderController extends Controller {
       return;
     }
 
-    await order.update({ status: 3 });
+    await order.update({ status: 3, refund_remark: reason });
 
     this.ctx.status = 200;
     this.ctx.body = util.makeRes('确认收货成功', 0);
