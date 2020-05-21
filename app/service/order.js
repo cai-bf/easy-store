@@ -8,6 +8,7 @@ class OrderService extends Service {
       distinct: true,
       order: this.app.Sequelize.literal('id DESC'),
       where: {
+        user_id: this.ctx.current_user.id,
         status: status
       },
       attributes: { exclude: ['deleted_at'] },
