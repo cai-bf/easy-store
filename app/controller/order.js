@@ -67,10 +67,10 @@ class OrderController extends Controller {
 
   async refund() {
     const order_id = this.ctx.params.id;
-    const reason = this.ctx.body.reason || '';
+    const reason = this.ctx.request.body.reason || '';
     const order = await this.ctx.model.Order.findByPk(parseInt(order_id));
     if (order === null || order.user_id !== this.ctx.current_user.id) {
-      this.ctx.status = 400;``
+      this.ctx.status = 400;
       this.ctx.body = util.makeRes('不存在该订单', 400);
       return;
     }
