@@ -28,8 +28,6 @@ class GoodsService extends Service {
     params.include = [{ model: this.app.model.Category, as: 'category' }];
     params.attributes = { exclude: ['description'] };
     const data = await this.ctx.model.Goods.findAndCountAll(params).then(res => {
-      console.log(res.rows[0]);
-      console.log(res.rows[0].created_at);
       for (let item of res.rows) {
         item.pic = JSON.parse(item.pic);
       }
