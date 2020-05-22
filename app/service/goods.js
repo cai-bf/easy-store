@@ -116,6 +116,8 @@ class GoodsService extends Service {
       res.pic = JSON.parse(res.pic);
       return res;
     });
+    // update view times
+    await this.app.model.Goods.increment('view', { where: { id: goods_id } });
     return goods;
   }
 
