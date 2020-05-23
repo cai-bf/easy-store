@@ -53,7 +53,7 @@ class CategoryController extends Controller {
 
   async destroy() {
     const { ctx } = this;
-    const res = await ctx.service.category.destroy(ctx.params.id, ctx.request.body.change_id);
+    const res = await ctx.service.category.destroy(ctx.params.id, ctx.request.body.change_id || null);
     if (res.ok) {
       ctx.body = util.makeRes('删除成功', 0, {});
       ctx.status = 200;

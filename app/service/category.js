@@ -22,21 +22,28 @@ class CategoryService extends Service {
 
   async destroy(id, change_id) {
     const from = await this.ctx.model.Category.findByPk(id);
-    if (change_id === undefined) { // 直接删除
-      if (from.parent_id === 0) {
+    if (change_id === null) { // 直接删除
+      if (from.parent_id === 0) { // 一级分类
         const categoryies = await from.getChildrens();
+        // 判断二级分类是否有关联商品
+        for (ca of categoryies) {
+          const num = await this.ctx.model.Goods.count({
+            where: {
+              category_id: ca.id
+            },
+            paranoid: false
+          });
+          // 有关联商品返回失败
+          if (num > 0) {
+            return { ok: false, msg: '该分类下的二级分类 ' + ca.name + ' 尚有关联商品, 请先转移' };
+          }
+        }
+        // 删除分类 
         const ids = [];
         for (const c of categoryies) {
           ids.push(c.id);
         }
-        const Op = this.app.Sequelize.Op;
-        await this.ctx.model.Goods.destroy({
-          where: {
-            category_id: {
-              [Op.in]: ids,
-            },
-          },
-        });
+        ids.push(from.id);
         await this.ctx.model.Category.destroy({
           where: {
             id: {
@@ -44,13 +51,21 @@ class CategoryService extends Service {
             },
           },
         });
+        return { ok: true };
+      } else { // 二级分类
+        const num = await this.ctx.model.Goods.count({
+          where: {
+            category_id: from.id
+          },
+          paranoid: false
+        });
+        if (num > 0) {
+          return { ok: false, msg: '尚有关联商品, 请选择转移分类' }
+        }
+        await from.destroy();
+        return { ok: true};
       }
-      await this.ctx.model.Goods.destroy({
-        where: {
-          category_id: from.id,
-        },
-      });
-      await from.destroy();
+      
     } else {
       const to = await this.ctx.model.Category.findByPk(change_id);
       if (from.parent_id === 0 || to.parent_id === 0) {
@@ -60,6 +75,7 @@ class CategoryService extends Service {
         where: {
           category_id: from.id,
         },
+        paranoid: false
       });
       await from.destroy();
     }
