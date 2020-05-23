@@ -12,7 +12,7 @@ class GoodsService extends Service {
       const category = await this.app.model.Category.findByPk(category_id);
       if (category.parent_id === 0) {
         let tmp = [];
-        for (const ca of await category.getChildren()) {
+        for (const ca of await category.getChildrens()) {
           tmp.push(ca.id);
         }
         params.where = { category_id: { [this.app.Sequelize.Op.in]: tmp } };
@@ -134,7 +134,7 @@ class GoodsService extends Service {
       const category = await this.app.model.Category.findByPk(category_id);
       if (category.parent_id === 0) {
         let tmp = [];
-        for (const ca of await category.getChildren()) {
+        for (const ca of await category.getChildrens()) {
           tmp.push(ca.id);
         }
         params.where = { category_id: { [this.app.Sequelize.Op.in]: tmp } };
