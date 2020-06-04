@@ -100,7 +100,7 @@ class OrderController extends Controller {
       return;
     }
 
-    await order.update({ status: 3, refund_remark: reason });
+    await order.update({ status: 3 });
 
     this.ctx.status = 200;
     this.ctx.body = util.makeRes('确认收货成功', 0);
