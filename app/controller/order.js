@@ -184,6 +184,13 @@ class OrderController extends Controller {
       return;
     }
 
+    const exist = await thix.ctx.model.Order.findOne({ where: { number: this.ctx.request.body.number } });
+    if (exist) {
+      this.ctx.status = 400;
+      this.ctx.body = util.makeRes('物流单号错误, 已存在该单号', 400);
+      return;
+    }
+
     const order_id = this.ctx.params.id;
     const order = await this.ctx.model.Order.findByPk(order_id);
 
