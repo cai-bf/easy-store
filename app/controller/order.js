@@ -101,6 +101,16 @@ class OrderController extends Controller {
     }
 
     await order.update({ status: 3 });
+    // 更新商品销量
+    const items = await order.getItems();
+    for (let item of items) {
+      let sku = await item.getSku();
+      await sku.increment('sale_num', { by: item.num });
+      await this.app.model.Goods.increment('sale_num', {
+        where: { 'id': sku.goods_id },
+        by: item.num
+      });
+    }
 
     this.ctx.status = 200;
     this.ctx.body = util.makeRes('确认收货成功', 0);
