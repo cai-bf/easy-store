@@ -47,7 +47,7 @@ class CategoryService extends Service {
         await this.ctx.model.Category.destroy({
           where: {
             id: {
-              [Op.in]: ids,
+              [this.app.Sequelize.Op.in]: ids,
             },
           },
         });
