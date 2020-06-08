@@ -85,6 +85,20 @@ class GoodsService extends Service {
               ]
             }
           ]
+        },
+        {
+          model: this.app.model.Comment,
+          as: 'comments',
+          attributes: ['id', 'content', 'created_at'],
+          limit: 1,
+          order: this.app.Sequelize.literal('id DESC'),
+          include: [
+            {
+              model: this.app.model.User,
+              as: 'user',
+              attributes: ['name', 'avatar']
+            }
+          ]
         }
       ]
     }).then(res => {
@@ -400,3 +414,4 @@ class GoodsService extends Service {
 }
 
 module.exports = GoodsService;
+

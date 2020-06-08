@@ -270,6 +270,36 @@ class GoodsController extends Controller {
     ctx.body = util.makeRes('重新上架成功', 0);
     ctx.status = 200;
   }
+
+  // 获取评价
+  async getComments() {
+    const goods_id = this.ctx.request.query.goods_id;
+    const goods = await this.ctx.model.Goods.findOne({
+      where: { id: goods_id },
+      attributes: ['id', 'name']
+    });
+
+    if (goods === null) {
+      this.ctx.status = 400;
+      this.ctx.body = util.makeRes('商品不存在或已下架', 400);
+      return;
+    }
+    
+    const data = await goods.getComments({
+      order: this.app.Sequelize.literal('created_at DESC'),
+      attributes: ['id', 'content', 'created_at'],
+      include: [
+        {
+          model: this.app.model.User,
+          as: 'user',
+          attributes: ['name', 'avatar']
+        }
+      ]
+    });
+
+    this.ctx.status = 200;
+    this.ctx.body = util.makeRes('获取成功', 0, { data });
+  }
 }
 
 module.exports = GoodsController;
