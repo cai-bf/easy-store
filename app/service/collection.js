@@ -54,9 +54,10 @@ class CollectionService extends Service {
             order: [['id', 'desc']],
             attributes: ['id', 'goods_id']
         }).then(res => {
-            for (const item of res) {
-                item.goods.pic = JSON.parse(item.goods.pic);
-            }
+            //测试bug，找出是哪些商品的问题
+            // for (const item of res) {
+            //     item.goods.pic = JSON.parse(item.goods.pic);
+            // }
             return res;
         });
 
