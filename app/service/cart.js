@@ -14,8 +14,9 @@ class CartService extends Service {
           include: [
             {
               model: this.ctx.model.Goods,
+              paranoid: false,
               as: 'goods',
-              attributes: ['id', 'name', 'pic']
+              attributes: ['id', 'name', 'pic', 'deleted_at']
             },
             {
               model: this.ctx.model.Option,
