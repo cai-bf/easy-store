@@ -35,7 +35,8 @@ class OrderService extends Service {
                 {
                   model: this.app.model.Goods,
                   as: 'goods',
-                  attributes: ['id', 'name', 'pic']
+                  attributes: ['id', 'name', 'pic', 'deleted_at'],
+                  paranoid: false,
                 },
                 {
                   model: this.app.model.Option,
@@ -134,7 +135,8 @@ class OrderService extends Service {
               {
                 model: this.app.model.Goods,
                 as: 'goods',
-                attributes: ['id', 'name', 'pic']
+                attributes: ['id', 'name', 'pic', 'deleted_at'],
+                paranoid: false,
               },
               {
                 model: this.app.model.Option,
@@ -168,7 +170,7 @@ class OrderService extends Service {
   async admin_refund(order) {
     for (const item of await order.getItems()) {
       let sku = await item.getSku();
-      let goods = await sku.getGoods();
+      let goods = await sku.getGoods({ paranoid: false, });
       await sku.increment('stock_num', { by: item.num });
       await goods.increment('stock_num', { by: item.num });
       await item.destroy();

@@ -41,7 +41,8 @@ class CollectionService extends Service {
                 {
                     model: this.ctx.model.Goods,
                     as: 'goods',
-                    attributes: ['id', 'name', 'pic', 'price', 'category_id'],
+                    paranoid: false,
+                    attributes: ['id', 'name', 'pic', 'price', 'category_id', 'deleted_at'],
                     include: [
                         {
                             model: this.ctx.model.Category,

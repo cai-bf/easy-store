@@ -364,7 +364,7 @@ class GoodsService extends Service {
     if (sku === null)
       return false;
     await sku.increment({ stock_num: num });
-    const goods = await sku.getGoods();
+    const goods = await sku.getGoods({ paranoid: false, });
     await goods.increment({ stock_num: num });
     await ctx.model.Record.create({
       sku_id: sku_id,
